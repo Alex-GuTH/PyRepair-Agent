@@ -210,9 +210,9 @@ commit to avoid self-referential amend loops.
 
 ### Task 2: Cold-Start Validation and SPEC_PROCESS Update
 
-**Status:** Implemented; cold-start validation found real model-contract
-ambiguity, and `SPEC.md` plus `PLAN.md` were revised before implementation
-continued.
+**Status:** Implemented in `adddd27`; cold-start validation found real
+model-contract ambiguity, and `SPEC.md` plus `PLAN.md` were revised before
+implementation continued.
 
 **Files:**
 - Modify: `SPEC_PROCESS.md`
@@ -253,6 +253,9 @@ git commit -m "docs: record cold-start validation"
 ```
 
 Update `PLAN.md` Task 2 status and `AGENT_LOG.md` with the commit hash.
+
+Cold-start documentation commit: `adddd27`. Evidence hash recording is stored in
+a follow-up docs commit to avoid self-referential amend loops.
 
 ---
 
