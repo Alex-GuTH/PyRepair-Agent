@@ -106,7 +106,7 @@ Each feature branch must have a PR/MR or equivalent review record with PLAN task
 
 ### Task 1: Repository Scaffold and Process Files
 
-**Status:** Implemented and committed in `ccb8bd5`; canonical `make test` could
+**Status:** Implemented in scaffold commit `1a33db8`; canonical `make test` could
 not be executed locally because no Make implementation is installed in the
 current Windows environment. Equivalent underlying verification
 `python -m pytest -q` passed and `make test` remains required in CI.
@@ -203,7 +203,8 @@ git commit -m "chore: scaffold PyRepair Agent project"
 
 Update `PLAN.md` Task 1 status and `AGENT_LOG.md` with the commit hash.
 
-Commit: `ccb8bd5`.
+Scaffold commit: `1a33db8`. Evidence recording is stored in a follow-up docs
+commit to avoid self-referential amend loops.
 
 ---
 

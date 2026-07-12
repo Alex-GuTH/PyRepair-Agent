@@ -180,7 +180,7 @@ Required SPEC/PLAN revisions:
 - The minimal `src/pyrepair` package, project metadata, and canonical `make test`
   target were then added without introducing runtime dependencies.
 - Green verification is recorded in `.superpowers/sdd/task-1-report.md`.
-- Task 1 commit: `ccb8bd5`.
+- Task 1 scaffold commit: `1a33db8`.
 - Local `make test` could not run because Make is unavailable on this Windows
   environment; the underlying `python -m pytest -q` command passed and CI must
   validate `make test`.
