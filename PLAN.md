@@ -261,8 +261,8 @@ a follow-up docs commit to avoid self-referential amend loops.
 
 ### Task 3: Core Data Models
 
-**Status:** Implemented; TDD red verification confirmed the missing
-`pyrepair.models` module and green verification passed. Commit: pending.
+**Status:** Implemented in `d980115`; TDD red verification confirmed the missing
+`pyrepair.models` module and green verification passed.
 
 **Files:**
 - Create: `src/pyrepair/models.py`
