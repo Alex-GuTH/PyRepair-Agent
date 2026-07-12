@@ -172,3 +172,15 @@ Required SPEC/PLAN revisions:
   cannot be collected naturally.
 - The project intentionally separates local repair mode from public demo mode to
   reduce remote code execution risk.
+
+## 7. Task 1 Implementation Evidence
+
+- The package import contract was written and run before the package existed;
+  the expected `ModuleNotFoundError` confirmed the red phase.
+- The minimal `src/pyrepair` package, project metadata, and canonical `make test`
+  target were then added without introducing runtime dependencies.
+- Green verification is recorded in `.superpowers/sdd/task-1-report.md`.
+- Task 1 commit: `ccb8bd5`.
+- Local `make test` could not run because Make is unavailable on this Windows
+  environment; the underlying `python -m pytest -q` command passed and CI must
+  validate `make test`.

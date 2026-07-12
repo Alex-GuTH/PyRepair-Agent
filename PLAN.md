@@ -106,6 +106,11 @@ Each feature branch must have a PR/MR or equivalent review record with PLAN task
 
 ### Task 1: Repository Scaffold and Process Files
 
+**Status:** Implemented and committed in `ccb8bd5`; canonical `make test` could
+not be executed locally because no Make implementation is installed in the
+current Windows environment. Equivalent underlying verification
+`python -m pytest -q` passed and `make test` remains required in CI.
+
 **Files:**
 - Create: `.gitignore`
 - Create: `pyproject.toml`
@@ -120,13 +125,13 @@ Each feature branch must have a PR/MR or equivalent review record with PLAN task
 - Produces canonical test command: `make test`
 - Produces process evidence files used by all later tasks.
 
-- [ ] **Step 1: Confirm repository state**
+- [x] **Step 1: Confirm repository state**
 
 Run: `git status --short`
 
 Expected: command succeeds. If it fails because the directory is not a Git repository, stop and ask the human owner to confirm initializing or moving to the final repository.
 
-- [ ] **Step 2: Create a worktree-backed branch**
+- [x] **Step 2: Create a worktree-backed branch**
 
 Run from the final repository root:
 
@@ -136,7 +141,7 @@ git switch -c feature/scaffold-and-process
 
 Expected: branch switches to `feature/scaffold-and-process`.
 
-- [ ] **Step 3: Write the failing import test**
+- [x] **Step 3: Write the failing import test**
 
 Create `tests/test_package_import.py` with this test:
 
@@ -147,19 +152,19 @@ def test_pyrepair_package_imports():
     assert pyrepair.__version__ == "0.1.0"
 ```
 
-- [ ] **Step 4: Run the test to verify red**
+- [x] **Step 4: Run the test to verify red**
 
 Run: `python -m pytest tests/test_package_import.py -q`
 
 Expected: FAIL with `ModuleNotFoundError: No module named 'pyrepair'` or missing `__version__`.
 
-- [ ] **Step 5: Add minimal package metadata**
+- [x] **Step 5: Add minimal package metadata**
 
 Create `pyproject.toml` defining package name `pyrepair-agent`, Python version floor `>=3.11`, package source under `src`, and dev dependencies for pytest.
 
 Create `src/pyrepair/__init__.py` exporting `__version__ = "0.1.0"`.
 
-- [ ] **Step 6: Add canonical test command**
+- [x] **Step 6: Add canonical test command**
 
 Create `Makefile` with a `test` target that runs:
 
@@ -167,23 +172,27 @@ Create `Makefile` with a `test` target that runs:
 python -m pytest -q
 ```
 
-- [ ] **Step 7: Update process evidence files**
+- [x] **Step 7: Update process evidence files**
 
 Ensure `AGENT_LOG.md` has columns for timestamp, task id, Superpowers skill, context, subagent summary, commit/PR link, human intervention, and lesson learned.
 
 Ensure `SPEC_PROCESS.md` has sections for brainstorming iterations, accepted/rejected suggestions, cold-start validation, and SPEC/PLAN revisions.
 
-- [ ] **Step 8: Add `.gitignore`**
+- [x] **Step 8: Add `.gitignore`**
 
 Include Python caches, virtual environments, build outputs, `.env`, local run logs, local key files, and OS/editor noise.
 
-- [ ] **Step 9: Run green verification**
+- [x] **Step 9: Run green verification**
 
 Run: `make test`
 
 Expected: PASS.
 
-- [ ] **Step 10: Commit and record evidence**
+Local note: `make` was unavailable in the current Windows environment, so the
+underlying command `python -m pytest -q` was run and passed with `1 passed`.
+CI must still execute `make test` on an environment with Make installed.
+
+- [x] **Step 10: Commit and record evidence**
 
 Run:
 
@@ -193,6 +202,8 @@ git commit -m "chore: scaffold PyRepair Agent project"
 ```
 
 Update `PLAN.md` Task 1 status and `AGENT_LOG.md` with the commit hash.
+
+Commit: `ccb8bd5`.
 
 ---
 
