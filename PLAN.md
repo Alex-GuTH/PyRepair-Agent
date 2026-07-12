@@ -210,6 +210,10 @@ commit to avoid self-referential amend loops.
 
 ### Task 2: Cold-Start Validation and SPEC_PROCESS Update
 
+**Status:** Implemented; cold-start validation found real model-contract
+ambiguity, and `SPEC.md` plus `PLAN.md` were revised before implementation
+continued.
+
 **Files:**
 - Modify: `SPEC_PROCESS.md`
 - Modify: `PLAN.md`
@@ -219,11 +223,11 @@ commit to avoid self-referential amend loops.
 - Consumes approved `SPEC.md` and `PLAN.md`.
 - Produces recorded cold-start feedback before implementation proceeds.
 
-- [ ] **Step 1: Start a different agent session**
+- [x] **Step 1: Start a different agent session**
 
 Use a different agent type from the main development agent. Provide only `SPEC.md` and `PLAN.md`.
 
-- [ ] **Step 2: Ask it to attempt one early task**
+- [x] **Step 2: Ask it to attempt one early task**
 
 Prompt requirement:
 
@@ -231,15 +235,15 @@ Prompt requirement:
 Read SPEC.md and PLAN.md only. Attempt Task 3 or Task 4. If any requirement is ambiguous, stop and ask rather than guessing.
 ```
 
-- [ ] **Step 3: Record the result**
+- [x] **Step 3: Record the result**
 
 In `SPEC_PROCESS.md`, record where the agent paused, what it misunderstood, and whether the issue came from the SPEC/PLAN or the agent.
 
-- [ ] **Step 4: Revise SPEC or PLAN if needed**
+- [x] **Step 4: Revise SPEC or PLAN if needed**
 
 If the cold-start agent reveals a real ambiguity, patch `SPEC.md` or `PLAN.md` before implementation continues.
 
-- [ ] **Step 5: Commit and record evidence**
+- [x] **Step 5: Commit and record evidence**
 
 Run:
 
