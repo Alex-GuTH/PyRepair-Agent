@@ -375,6 +375,10 @@ Update `PLAN.md` Task 3 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 4: Strict Action Parser
 
+**Status:** Implemented; TDD red verification confirmed the missing
+`pyrepair.actions` module, and green verification passed `7 passed`. Commit:
+pending.
+
 **Files:**
 - Create: `src/pyrepair/actions.py`
 - Create: `tests/test_actions.py`
@@ -384,7 +388,7 @@ Update `PLAN.md` Task 3 status and `AGENT_LOG.md` with the commit hash.
 - Produces `parse_action(raw: str) -> Action`.
 - Raises `ActionParseError` for malformed JSON, unknown action types, missing payload, or non-object payload.
 
-- [ ] **Step 1: Write failing parser tests**
+- [x] **Step 1: Write failing parser tests**
 
 Create tests for valid JSON, malformed JSON, unknown action type, and missing payload:
 
@@ -406,23 +410,23 @@ def test_rejects_unknown_action_type():
         parse_action('{"type":"SHELL","payload":{"command":"rm -rf ."}}')
 ```
 
-- [ ] **Step 2: Run red verification**
+- [x] **Step 2: Run red verification**
 
 Run: `python -m pytest tests/test_actions.py -q`
 
 Expected: FAIL because `pyrepair.actions` does not exist.
 
-- [ ] **Step 3: Implement parser and exception**
+- [x] **Step 3: Implement parser and exception**
 
 Implement `ActionParseError` and `parse_action`. The parser must call `json.loads`, require a JSON object, map `type` to `ActionType`, require `payload` to be a dict, and preserve raw model output on the returned `Action`.
 
-- [ ] **Step 4: Run green verification**
+- [x] **Step 4: Run green verification**
 
 Run: `python -m pytest tests/test_actions.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit and record evidence**
+- [x] **Step 5: Commit and record evidence**
 
 Run:
 
