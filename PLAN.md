@@ -450,7 +450,7 @@ Review fix commit: `c1e54c6`; adds generated-path approval, binary-write
 rejection, and certificate-file protection with regression TDD evidence.
 Second review fix commit: `8e200ff`; rejects `.bin` and unknown extensionless
 writes while keeping known protected text/config targets approval-required.
-Evidence hash recording commit: pending.
+Evidence hash recording commit: `88d72c8`.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`

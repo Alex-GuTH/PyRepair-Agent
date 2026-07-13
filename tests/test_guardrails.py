@@ -60,6 +60,16 @@ def test_rejects_unknown_or_binary_asset_write(tmp_path, path):
     assert decision.policy_code == "binary_write_not_allowed"
 
 
+@pytest.mark.parametrize("path", ["assets/model.dat", "artifact.wasm"])
+def test_rejects_unknown_extension_asset_write(tmp_path, path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "binary_write_not_allowed"
+
+
 def test_requires_approval_for_extensionless_makefile_write(tmp_path):
     action = Action(type=ActionType.APPLY_PATCH, payload={"path": "Makefile"})
 

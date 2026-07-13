@@ -33,6 +33,22 @@ BINARY_FILE_EXTENSIONS = frozenset(
     }
 )
 
+TEXT_WRITE_SUFFIXES = frozenset(
+    {
+        ".cfg",
+        ".ini",
+        ".lock",
+        ".md",
+        ".py",
+        ".pyc",
+        ".rst",
+        ".toml",
+        ".txt",
+        ".yaml",
+        ".yml",
+    }
+)
+
 PROTECTED_FILE_NAMES = frozenset(
     {
         "pyproject.toml",
@@ -162,8 +178,9 @@ def _is_sensitive(path: Path) -> bool:
 
 
 def _is_binary(path: Path) -> bool:
-    return path.suffix.lower() in BINARY_FILE_EXTENSIONS or (
-        not path.suffix and not _is_known_protected_text_file(path)
+    suffix = path.suffix.lower()
+    return suffix in BINARY_FILE_EXTENSIONS or (
+        suffix not in TEXT_WRITE_SUFFIXES and not _is_known_protected_text_file(path)
     )
 
 
@@ -182,7 +199,7 @@ def _requires_write_approval(path: Path, project_root: Path) -> bool:
         or name.startswith("test_")
         or name.endswith("_test.py")
         or _is_known_protected_text_file(path)
-        or path.suffix.lower() in {".md", ".rst", ".txt", ".toml", ".ini", ".cfg", ".yaml", ".yml", ".lock", ".pyc"}
+        or path.suffix.lower() in TEXT_WRITE_SUFFIXES - {".py"}
     )
 
 
