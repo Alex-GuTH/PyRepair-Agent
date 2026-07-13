@@ -454,9 +454,11 @@ Evidence hash recording commit: `88d72c8`.
 Third review fix commit: `0feab4d`; rejects unknown-extension writes while
 retaining known protected text/config targets. No separate evidence commit was
 recorded.
-Fourth review-fix commit: pending; rejects compiled Python writes before
+Fourth review-fix commit: `89820f8`; rejects compiled Python writes before
 protected-path handling and requires approval for protected unknown text
 suffixes.
+Fifth review-fix commit: `3fa761f`; requires approval for protected config and
+dependency directories such as `config/` and `requirements/`.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
