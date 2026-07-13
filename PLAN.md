@@ -857,7 +857,8 @@ Update `PLAN.md` Task 10 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 11: Run Controller, Configuration, and CLI
 
-**Status:** Implemented in `7137cac`. TDD red verification failed because
+**Status:** Complete; implementation commit `7137cac`, evidence commit
+`522befc`. TDD red verification failed because
 `pyrepair.config` and `pyrepair.cli` were absent; focused green verification
 passed `4 passed`. `make test` is unavailable in this Windows environment, and
 the equivalent `python -m pytest -q` verification passed `91 passed`.
