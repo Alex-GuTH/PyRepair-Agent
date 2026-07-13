@@ -465,6 +465,7 @@ paths such as `id_rsa` and `id_ed25519` as sensitive files.
 Sixth review-fix evidence commit: `61b1bb6`.
 Seventh review-fix commit: `8b94d25`; protects common secret filenames and
 requires approval for root-level common configuration files.
+Seventh review-fix evidence commit: `56e1fc3`.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
