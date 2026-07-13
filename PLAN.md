@@ -444,7 +444,8 @@ Update `PLAN.md` Task 4 status and `AGENT_LOG.md` with the commit hash.
 
 **Status:** Implemented in `573a2da`; TDD red verification confirmed the missing
 `pyrepair.guardrails` module, and green verification passed `8 passed`.
-Evidence hash recording commit: pending.
+Evidence hash recording commit: `065ed55`; this hash-recording commit records
+that value separately to avoid self-reference.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
