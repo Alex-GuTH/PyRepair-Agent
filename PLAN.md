@@ -442,6 +442,10 @@ Update `PLAN.md` Task 4 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 5: Guardrail Engine
 
+**Status:** Implemented; TDD red verification confirmed the missing
+`pyrepair.guardrails` module, and green verification passed `8 passed`. Commit
+hash pending until the implementation commit is created.
+
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
 - Create: `tests/test_guardrails.py`
