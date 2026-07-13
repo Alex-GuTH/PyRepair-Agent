@@ -1067,7 +1067,7 @@ Run: `make test`
 
 Expected: PASS.
 
-- [ ] **Step 8: Commit and record evidence**
+- [x] **Step 8: Commit and record evidence**
 
 Run:
 
