@@ -375,9 +375,8 @@ Update `PLAN.md` Task 3 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 4: Strict Action Parser
 
-**Status:** Implemented; TDD red verification confirmed the missing
-`pyrepair.actions` module, and green verification passed `7 passed`. Commit:
-pending.
+**Status:** Implemented in `d5f1e01`; TDD red verification confirmed the
+missing `pyrepair.actions` module, and green verification passed `7 passed`.
 
 **Files:**
 - Create: `src/pyrepair/actions.py`
