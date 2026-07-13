@@ -770,7 +770,7 @@ Update `PLAN.md` Task 9 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 10: Agent Core Loop and Mock Feedback Demo
 
-**Status:** Implemented; commit pending. TDD red verification failed as expected because
+**Status:** Implemented in `2593c8c`. TDD red verification failed as expected because
 `pyrepair.core` was absent; focused green verification passed `2 passed`.
 `make test` is unavailable in this Windows environment (`make` is not
 recognized), and the equivalent `python -m pytest -q` verification passed
