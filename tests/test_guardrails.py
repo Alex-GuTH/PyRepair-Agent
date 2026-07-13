@@ -50,6 +50,25 @@ def test_rejects_binary_write(tmp_path):
     assert decision.policy_code == "binary_write_not_allowed"
 
 
+def test_rejects_compiled_python_write(tmp_path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": "__pycache__/module.pyc"})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "binary_write_not_allowed"
+
+
+@pytest.mark.parametrize("path", ["docs/guide.adoc", ".github/workflows/release.json"])
+def test_requires_approval_for_protected_unknown_text_write(tmp_path, path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED
+    assert decision.policy_code == "protected_write_approval_required"
+
+
 @pytest.mark.parametrize("path", ["assets/firmware.bin", "assets/firmware"])
 def test_rejects_unknown_or_binary_asset_write(tmp_path, path):
     action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})

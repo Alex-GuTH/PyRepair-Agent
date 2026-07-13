@@ -451,6 +451,12 @@ rejection, and certificate-file protection with regression TDD evidence.
 Second review fix commit: `8e200ff`; rejects `.bin` and unknown extensionless
 writes while keeping known protected text/config targets approval-required.
 Evidence hash recording commit: `88d72c8`.
+Third review fix commit: `0feab4d`; rejects unknown-extension writes while
+retaining known protected text/config targets. No separate evidence commit was
+recorded.
+Fourth review-fix commit: pending; rejects compiled Python writes before
+protected-path handling and requires approval for protected unknown text
+suffixes.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`

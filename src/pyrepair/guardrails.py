@@ -26,6 +26,7 @@ BINARY_FILE_EXTENSIONS = frozenset(
         ".mp4",
         ".pdf",
         ".png",
+        ".pyc",
         ".so",
         ".tar",
         ".webp",
@@ -40,7 +41,6 @@ TEXT_WRITE_SUFFIXES = frozenset(
         ".lock",
         ".md",
         ".py",
-        ".pyc",
         ".rst",
         ".toml",
         ".txt",
@@ -110,7 +110,7 @@ def evaluate_action(
             resolved_paths.append(resolved)
 
         root = project_root.resolve()
-        if any(_is_binary(path) for path in resolved_paths):
+        if any(_is_clearly_binary(path) for path in resolved_paths):
             return _reject("binary_write_not_allowed", "Binary file writes are not allowed.")
         if any(_requires_write_approval(path, root) for path in resolved_paths):
             return _approval(
@@ -119,9 +119,7 @@ def evaluate_action(
             )
         if all(path.suffix.lower() == ".py" for path in resolved_paths):
             return _allow("source_write_allowed", "Ordinary Python source writes are allowed.")
-        return _approval(
-            "write_approval_required", "Only ordinary Python source writes are automatic."
-        )
+        return _reject("binary_write_not_allowed", "Unknown file writes are not allowed.")
 
     if action.type is ActionType.RUN_TESTS:
         command = action.payload.get("command", list(policy.pytest_command))
@@ -177,11 +175,8 @@ def _is_sensitive(path: Path) -> bool:
     )
 
 
-def _is_binary(path: Path) -> bool:
-    suffix = path.suffix.lower()
-    return suffix in BINARY_FILE_EXTENSIONS or (
-        suffix not in TEXT_WRITE_SUFFIXES and not _is_known_protected_text_file(path)
-    )
+def _is_clearly_binary(path: Path) -> bool:
+    return path.suffix.lower() in BINARY_FILE_EXTENSIONS
 
 
 def _is_known_protected_text_file(path: Path) -> bool:
