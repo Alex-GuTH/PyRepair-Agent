@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from pyrepair.models import LLMProvider, RunStatus
@@ -26,7 +27,27 @@ def test_repair_config_has_safe_demo_defaults(tmp_path: Path) -> None:
     ).llm_provider is LLMProvider.OPENAI_COMPATIBLE
 
 
-def test_run_controller_delegates_to_injected_core_loop(tmp_path: Path) -> None:
+def test_run_controller_rejects_unconfigured_openai_compatible_provider(tmp_path: Path) -> None:
+    from pyrepair.config import RepairConfig
+    from pyrepair.run_controller import RunController
+    from pyrepair.store import JsonlRunStore
+
+    project_root = tmp_path / "project"
+    project_root.mkdir()
+
+    with pytest.raises(ValueError, match="OpenAI-compatible"):
+        RunController().start_run(
+            project_root,
+            RepairConfig(
+                run_store=JsonlRunStore(tmp_path / "runs"),
+                llm_provider=LLMProvider.OPENAI_COMPATIBLE,
+            ),
+        )
+
+
+def test_run_controller_delegates_to_injected_core_loop_for_openai_provider(
+    tmp_path: Path,
+) -> None:
     from pyrepair.config import RepairConfig
     from pyrepair.run_controller import RunController
     from pyrepair.store import JsonlRunStore
@@ -40,7 +61,11 @@ def test_run_controller_delegates_to_injected_core_loop(tmp_path: Path) -> None:
     project_root = tmp_path / "project"
     project_root.mkdir()
     run = RunController(core_loop=RecordingCoreLoop()).start_run(
-        project_root, RepairConfig(run_store=JsonlRunStore(tmp_path / "runs"))
+        project_root,
+        RepairConfig(
+            run_store=JsonlRunStore(tmp_path / "runs"),
+            llm_provider=LLMProvider.OPENAI_COMPATIBLE,
+        ),
     )
 
     assert run.status is RunStatus.PASSED

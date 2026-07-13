@@ -862,6 +862,9 @@ Update `PLAN.md` Task 10 status and `AGENT_LOG.md` with the commit hash.
 `pyrepair.config` and `pyrepair.cli` were absent; focused green verification
 passed `4 passed`. `make test` is unavailable in this Windows environment, and
 the equivalent `python -m pytest -q` verification passed `91 passed`.
+Review fix: unconfigured `OPENAI_COMPATIBLE` runs now fail explicitly instead
+of silently using mock; focused review verification passed `5 passed`, and full
+verification passed `92 passed`.
 
 **Files:**
 - Create: `src/pyrepair/config.py`
