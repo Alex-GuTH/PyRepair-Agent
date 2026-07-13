@@ -140,10 +140,25 @@ class PatchApplier:
 
     @staticmethod
     def _validate_source_write(project_root: Path, path: Path) -> None:
-        relative_parts = path.relative_to(project_root).parts
+        relative_parts = tuple(part.lower() for part in path.relative_to(project_root).parts)
+        protected_parts = {
+            ".circleci",
+            ".github",
+            ".gitlab",
+            "__pycache__",
+            "config",
+            "configs",
+            "dist",
+            "docs",
+            "generated",
+            "requirements",
+            "test",
+            "tests",
+        }
         if (
             path.suffix != ".py"
-            or "tests" in relative_parts
+            or bool(set(relative_parts) & protected_parts)
+            or any("generated" in part for part in relative_parts)
             or path.name.startswith("test_")
             or path.name.endswith("_test.py")
         ):

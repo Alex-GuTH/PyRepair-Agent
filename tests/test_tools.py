@@ -110,6 +110,36 @@ def test_patch_applier_rejects_non_source_targets(tmp_path: Path) -> None:
     assert test_file.read_text(encoding="utf-8") == "def test_value():\n    assert 1 == 1\n"
 
 
+@pytest.mark.parametrize(
+    "target_path",
+    [
+        "test/helpers.py",
+        "Tests/helpers.py",
+        ".github/workflows/repair.py",
+        "config/repair.py",
+        "generated/repair.py",
+    ],
+)
+def test_patch_applier_rejects_protected_python_paths(
+    tmp_path: Path, target_path: str
+) -> None:
+    protected_file = tmp_path / target_path
+    protected_file.parent.mkdir(parents=True)
+    protected_file.write_text("VALUE = 1\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ordinary Python source"):
+        PatchApplier().apply_unified_diff(
+            tmp_path,
+            f"--- a/{target_path}\n"
+            f"+++ b/{target_path}\n"
+            "@@ -1 +1 @@\n"
+            "-VALUE = 1\n"
+            "+VALUE = 2\n",
+        )
+
+    assert protected_file.read_text(encoding="utf-8") == "VALUE = 1\n"
+
+
 def test_patch_applier_handles_zero_start_insertion_at_file_top(tmp_path: Path) -> None:
     source_file = tmp_path / "src" / "app.py"
     source_file.parent.mkdir()
