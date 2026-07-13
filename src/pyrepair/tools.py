@@ -5,6 +5,7 @@ import subprocess
 import time
 from pathlib import Path
 
+from pyrepair.guardrails import is_sensitive_path, requires_write_approval
 from pyrepair.models import PatchRecord, TestResult
 
 
@@ -140,27 +141,11 @@ class PatchApplier:
 
     @staticmethod
     def _validate_source_write(project_root: Path, path: Path) -> None:
-        relative_parts = tuple(part.lower() for part in path.relative_to(project_root).parts)
-        protected_parts = {
-            ".circleci",
-            ".github",
-            ".gitlab",
-            "__pycache__",
-            "build",
-            "config",
-            "configs",
-            "dist",
-            "docs",
-            "generated",
-            "requirements",
-            "test",
-            "tests",
-        }
         name = path.name.lower()
         if (
             path.suffix.lower() != ".py"
-            or bool(set(relative_parts) & protected_parts)
-            or any("generated" in part for part in relative_parts)
+            or is_sensitive_path(path)
+            or requires_write_approval(path, project_root)
             or name.startswith("test_")
             or name.endswith("_test.py")
         ):

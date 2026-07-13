@@ -209,6 +209,11 @@ def _is_sensitive(path: Path) -> bool:
     )
 
 
+def is_sensitive_path(path: Path) -> bool:
+    """Return whether a path matches sensitive filename or extension policy."""
+    return _is_sensitive(path)
+
+
 def _is_clearly_binary(path: Path) -> bool:
     return path.suffix.lower() in BINARY_FILE_EXTENSIONS
 
@@ -235,6 +240,11 @@ def _requires_write_approval(path: Path, project_root: Path) -> bool:
         or _is_known_protected_text_file(path)
         or path.suffix.lower() in TEXT_WRITE_SUFFIXES - {".py"}
     )
+
+
+def requires_write_approval(path: Path, project_root: Path) -> bool:
+    """Return whether a project path requires human approval before writing."""
+    return _requires_write_approval(path, project_root)
 
 
 def _allow(policy_code: str, reason: str) -> GuardrailDecision:

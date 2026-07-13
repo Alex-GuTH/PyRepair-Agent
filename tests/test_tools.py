@@ -121,6 +121,10 @@ def test_patch_applier_rejects_non_source_targets(tmp_path: Path) -> None:
         "generated/repair.py",
         "Test_repair.py",
         "REPAIR_TEST.py",
+        "setup.py",
+        "api_key.py",
+        "credentials.py",
+        "private_key.py",
     ],
 )
 def test_patch_applier_rejects_protected_python_paths(
