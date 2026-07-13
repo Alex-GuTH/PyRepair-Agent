@@ -213,3 +213,4 @@ Required SPEC/PLAN revisions:
   original blocked wording in `.superpowers/sdd/task-14-report.md` was a
   time-specific worker record, not the only exact source of final Task 14
   history; the report now records this later controller action as well.
+- Task 14 review-fix commit: `f8a63e7`.
