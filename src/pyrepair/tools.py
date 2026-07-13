@@ -146,6 +146,7 @@ class PatchApplier:
             ".github",
             ".gitlab",
             "__pycache__",
+            "build",
             "config",
             "configs",
             "dist",
@@ -155,12 +156,13 @@ class PatchApplier:
             "test",
             "tests",
         }
+        name = path.name.lower()
         if (
-            path.suffix != ".py"
+            path.suffix.lower() != ".py"
             or bool(set(relative_parts) & protected_parts)
             or any("generated" in part for part in relative_parts)
-            or path.name.startswith("test_")
-            or path.name.endswith("_test.py")
+            or name.startswith("test_")
+            or name.endswith("_test.py")
         ):
             raise ValueError("patch target must be an ordinary Python source file")
 

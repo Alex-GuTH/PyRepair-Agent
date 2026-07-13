@@ -116,15 +116,18 @@ def test_patch_applier_rejects_non_source_targets(tmp_path: Path) -> None:
         "test/helpers.py",
         "Tests/helpers.py",
         ".github/workflows/repair.py",
+        "build/repair.py",
         "config/repair.py",
         "generated/repair.py",
+        "Test_repair.py",
+        "REPAIR_TEST.py",
     ],
 )
 def test_patch_applier_rejects_protected_python_paths(
     tmp_path: Path, target_path: str
 ) -> None:
     protected_file = tmp_path / target_path
-    protected_file.parent.mkdir(parents=True)
+    protected_file.parent.mkdir(parents=True, exist_ok=True)
     protected_file.write_text("VALUE = 1\n", encoding="utf-8")
 
     with pytest.raises(ValueError, match="ordinary Python source"):
