@@ -605,6 +605,8 @@ Update `PLAN.md` Task 6 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 7: Tool Implementations and Fixture Project
 
+**Status:** Implemented; commit evidence pending.
+
 **Files:**
 - Create: `src/pyrepair/tools.py`
 - Create: `tests/test_tools.py`
@@ -617,42 +619,42 @@ Update `PLAN.md` Task 6 status and `AGENT_LOG.md` with the commit hash.
 - Produces `SafeFileReader.read(project_root: Path, path: str) -> str`.
 - Produces `PatchApplier.apply_unified_diff(project_root: Path, diff_text: str) -> PatchRecord`.
 
-- [ ] **Step 1: Write failing project scanner tests**
+- [x] **Step 1: Write failing project scanner tests**
 
 Create a temp project with `src/app.py` and `tests/test_app.py`. Assert scanner separates source and test files.
 
-- [ ] **Step 2: Write failing pytest runner tests**
+- [x] **Step 2: Write failing pytest runner tests**
 
 Create a temp pytest project with one failing test. Run `PytestRunner` and assert non-zero exit code and captured output.
 
-- [ ] **Step 3: Write failing file reader and patch tests**
+- [x] **Step 3: Write failing file reader and patch tests**
 
 Assert safe reader reads project files and patch applier changes a source file when given a unified diff.
 
-- [ ] **Step 4: Run red verification**
+- [x] **Step 4: Run red verification**
 
 Run: `python -m pytest tests/test_tools.py -q`
 
 Expected: FAIL because `pyrepair.tools` does not exist.
 
-- [ ] **Step 5: Add fixture project**
+- [x] **Step 5: Add fixture project**
 
 Create `examples/buggy_calculator` with a deliberately failing implementation:
 
 - `add(1, 2)` returns an incorrect result before repair;
 - `tests/test_calculator.py` expects correct arithmetic.
 
-- [ ] **Step 6: Implement tools**
+- [x] **Step 6: Implement tools**
 
 Implement scanner, pytest runner, safe reader, and patch applier. All write operations must assume guardrails already approved the action, but patch applier must still refuse paths outside the project.
 
-- [ ] **Step 7: Run green verification**
+- [x] **Step 7: Run green verification**
 
 Run: `python -m pytest tests/test_tools.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 8: Commit and record evidence**
+- [x] **Step 8: Commit and record evidence**
 
 Run:
 
