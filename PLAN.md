@@ -669,7 +669,7 @@ Update `PLAN.md` Task 7 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 8: Run Store
 
-**Status:** Implemented; commit evidence pending.
+**Status:** Complete; implementation commit `68893fb`.
 
 **Files:**
 - Create: `src/pyrepair/store.py`
