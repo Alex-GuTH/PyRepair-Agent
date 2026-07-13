@@ -52,6 +52,23 @@ def test_store_replays_created_run_and_appended_step(tmp_path: Path) -> None:
     assert len((tmp_path / "runs" / "run-001.jsonl").read_text(encoding="utf-8").splitlines()) == 2
 
 
+def test_store_replays_finished_run_status(tmp_path: Path) -> None:
+    store = JsonlRunStore(tmp_path)
+    run = RunRecord(id="run-finished", project_root="C:/projects/example")
+    store.create_run(run)
+    run.status = RunStatus.WAITING_APPROVAL
+    run.updated_at = "2026-07-13T12:00:00Z"
+    run.final_summary = "Approval is required."
+
+    store.finish_run(run)
+
+    replayed_run = store.get_run(run.id)
+
+    assert replayed_run.status is RunStatus.WAITING_APPROVAL
+    assert replayed_run.updated_at == "2026-07-13T12:00:00Z"
+    assert replayed_run.final_summary == "Approval is required."
+
+
 def test_store_restores_nested_failure_summary_and_enum_values(tmp_path: Path) -> None:
     store = JsonlRunStore(tmp_path)
     run = RunRecord(id="run-002", project_root="C:/projects/example", status=RunStatus.FAILED)

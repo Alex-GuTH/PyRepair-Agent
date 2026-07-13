@@ -51,6 +51,15 @@ def test_allows_ordinary_python_source_write(tmp_path):
     assert decision.policy_code == "source_write_allowed"
 
 
+def test_requires_approval_for_pytest_conftest_write(tmp_path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": "conftest.py"})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED
+    assert decision.policy_code == "protected_write_approval_required"
+
+
 @pytest.mark.parametrize("path", ["generated/repair.py", "src/repair_generated.py"])
 def test_requires_approval_for_generated_python_write(tmp_path, path):
     action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})

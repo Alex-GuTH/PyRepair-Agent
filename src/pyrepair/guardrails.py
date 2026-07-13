@@ -51,6 +51,7 @@ TEXT_WRITE_SUFFIXES = frozenset(
 
 PROTECTED_FILE_NAMES = frozenset(
     {
+        "conftest.py",
         "pyproject.toml",
         "setup.py",
         "setup.cfg",

@@ -77,7 +77,17 @@ def test_core_loop_uses_assertion_feedback_to_repair_source_file(tmp_path: Path)
     assert "return left + right" in (project_root / "src" / "calculator.py").read_text(
         encoding="utf-8"
     )
-    assert len(store.get_run(run.id).steps) > 1
+    replayed_run = store.get_run(run.id)
+    assert replayed_run.status is RunStatus.PASSED
+    assert replayed_run.steps[1].feedback is not None
+    assert replayed_run.steps[1].feedback.category is FailureCategory.ASSERTION_FAILURE
+    assert len(
+        [
+            step
+            for step in replayed_run.steps
+            if step.action is not None and step.action.type is ActionType.APPLY_PATCH
+        ]
+    ) == 2
 
 
 def test_core_loop_waits_for_approval_before_changing_test_file(tmp_path: Path) -> None:
@@ -107,6 +117,7 @@ def test_core_loop_waits_for_approval_before_changing_test_file(tmp_path: Path) 
 
     assert run.status is RunStatus.WAITING_APPROVAL
     assert test_file.read_text(encoding="utf-8") == original_test
+    assert store.get_run(run.id).status is RunStatus.WAITING_APPROVAL
     assert any(
         step.action is not None
         and step.action.type is ActionType.APPLY_PATCH

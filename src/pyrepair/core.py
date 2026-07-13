@@ -94,7 +94,7 @@ class AgentCoreLoop:
 
         feedback = self._run_tests(run, config, round_index=0)
         if feedback.category is FailureCategory.NONE:
-            return self._finish(run, RunStatus.PASSED, "Initial pytest run passed.")
+            return self._finish(run, config, RunStatus.PASSED, "Initial pytest run passed.")
 
         last_feedback = feedback
         read_files: dict[str, str] = {}
@@ -120,7 +120,7 @@ class AgentCoreLoop:
                         created_at=_timestamp(),
                     ),
                 )
-                return self._finish(run, RunStatus.FAILED, "Unable to obtain a valid action.")
+                return self._finish(run, config, RunStatus.FAILED, "Unable to obtain a valid action.")
 
             decision = evaluate_action(action, root, config.guardrail_policy)
             if decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED:
@@ -131,6 +131,7 @@ class AgentCoreLoop:
                 )
                 return self._finish(
                     run,
+                    config,
                     RunStatus.WAITING_APPROVAL,
                     decision.reason,
                 )
@@ -140,7 +141,7 @@ class AgentCoreLoop:
                     config,
                     self._guardrail_step(run, round_index, action, decision, last_feedback),
                 )
-                return self._finish(run, RunStatus.FAILED, decision.reason)
+                return self._finish(run, config, RunStatus.FAILED, decision.reason)
 
             tool_result, read_value = self._dispatch(action, root, config)
             if read_value is not None:
@@ -168,17 +169,17 @@ class AgentCoreLoop:
                 )
                 continue
             if action.type is ActionType.FINISH:
-                return self._finish(run, RunStatus.FAILED, "Agent finished before tests passed.")
+                return self._finish(run, config, RunStatus.FAILED, "Agent finished before tests passed.")
             if action.type is ActionType.APPLY_PATCH:
                 last_feedback = self._run_tests(run, config, round_index=round_index)
                 if last_feedback.category is FailureCategory.NONE:
-                    return self._finish(run, RunStatus.PASSED, "Pytest passed after patch.")
+                    return self._finish(run, config, RunStatus.PASSED, "Pytest passed after patch.")
             elif action.type is ActionType.RUN_TESTS:
                 last_feedback = tool_result.test_result.failure_summary  # type: ignore[union-attr]
                 if last_feedback.category is FailureCategory.NONE:
-                    return self._finish(run, RunStatus.PASSED, "Pytest passed.")
+                    return self._finish(run, config, RunStatus.PASSED, "Pytest passed.")
 
-        return self._finish(run, RunStatus.FAILED, "Maximum repair rounds reached.")
+        return self._finish(run, config, RunStatus.FAILED, "Maximum repair rounds reached.")
 
     def _run_tests(
         self,
@@ -305,10 +306,16 @@ class AgentCoreLoop:
         ]
 
     @staticmethod
-    def _finish(run: RunRecord, status: RunStatus, summary: str) -> RunRecord:
+    def _finish(
+        run: RunRecord,
+        config: RepairConfig,
+        status: RunStatus,
+        summary: str,
+    ) -> RunRecord:
         run.status = status
         run.final_summary = summary
         run.updated_at = _timestamp()
+        config.run_store.finish_run(run)
         return run
 
 

@@ -775,7 +775,9 @@ Update `PLAN.md` Task 9 status and `AGENT_LOG.md` with the commit hash.
 `pyrepair.core` was absent; focused green verification passed `2 passed`.
 `make test` is unavailable in this Windows environment (`make` is not
 recognized), and the equivalent `python -m pytest -q` verification passed
-`85 passed`.
+`85 passed`. Review fix: `conftest.py` now requires approval before patching,
+and JSONL replay persists final run status. Focused review verification passed
+`44 passed`; full verification passed `87 passed`.
 
 **Files:**
 - Create: `src/pyrepair/core.py`

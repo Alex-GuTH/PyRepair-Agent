@@ -71,6 +71,22 @@ class JsonlRunStore:
             raise FileNotFoundError(f"run does not exist: {run_id}")
         self._append_event(path, {"event": "step-appended", "step": dataclass_to_dict(step)})
 
+    def finish_run(self, run: RunRecord) -> None:
+        """Append the final mutable fields needed to replay a completed run."""
+        path = self._path_for(run.id)
+        if not path.exists():
+            raise FileNotFoundError(f"run does not exist: {run.id}")
+        self._append_event(
+            path,
+            {
+                "event": "run-finished",
+                "status": run.status.value,
+                "updated_at": run.updated_at,
+                "current_round": run.current_round,
+                "final_summary": run.final_summary,
+            },
+        )
+
     def get_run(self, run_id: str) -> RunRecord:
         path = self._path_for(run_id)
         if not path.exists():
@@ -85,6 +101,13 @@ class JsonlRunStore:
                 if run is None:
                     raise ValueError(f"step event precedes run creation: {run_id}")
                 run.steps.append(_run_step_from_dict(event["step"]))
+            elif event["event"] == "run-finished":
+                if run is None:
+                    raise ValueError(f"finish event precedes run creation: {run_id}")
+                run.status = RunStatus(event["status"])
+                run.updated_at = event.get("updated_at", run.updated_at)
+                run.current_round = event.get("current_round", run.current_round)
+                run.final_summary = event.get("final_summary", run.final_summary)
 
         if run is None:
             raise ValueError(f"run file has no creation event: {run_id}")
