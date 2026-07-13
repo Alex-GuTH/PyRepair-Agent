@@ -69,6 +69,8 @@ PROTECTED_FILE_NAMES = frozenset(
     }
 )
 
+PROTECTED_DIRECTORIES = frozenset({"config", "configs", "requirements"})
+
 
 @dataclass(frozen=True)
 class GuardrailPolicy:
@@ -190,6 +192,7 @@ def _requires_write_approval(path: Path, project_root: Path) -> bool:
     name = path.name.lower()
     return (
         bool(parts & {"test", "tests", "docs", ".github", ".gitlab", ".circleci", "build", "dist", "__pycache__"})
+        or bool(parts & PROTECTED_DIRECTORIES)
         or any("generated" in part for part in path_parts)
         or name.startswith("test_")
         or name.endswith("_test.py")

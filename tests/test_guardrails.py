@@ -98,6 +98,16 @@ def test_requires_approval_for_extensionless_makefile_write(tmp_path):
     assert decision.policy_code == "protected_write_approval_required"
 
 
+@pytest.mark.parametrize("path", ["config/settings.json", "requirements/base.in"])
+def test_requires_approval_for_protected_config_and_dependency_writes(tmp_path, path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED
+    assert decision.policy_code == "protected_write_approval_required"
+
+
 @pytest.mark.parametrize("path", ["certs/service.crt", "certs/service.cer"])
 @pytest.mark.parametrize("action_type", [ActionType.READ_FILE, ActionType.APPLY_PATCH])
 def test_rejects_certificate_file_access(tmp_path, path, action_type):
