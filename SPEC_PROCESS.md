@@ -206,3 +206,4 @@ Required SPEC/PLAN revisions:
   passed `105 passed` with one third-party deprecation warning. `git diff --check`
   completed without whitespace errors. Local `make test` could not run because
   Make is not installed on this Windows host, so no remote CI pass is implied.
+- Task 14 delivery commit: `013f89c`.

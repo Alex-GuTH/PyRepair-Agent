@@ -1082,11 +1082,11 @@ Update `PLAN.md` Task 13 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 14: CI, Docker, README, and Final Process Docs
 
-**Status:** Implemented locally; the worker stopped at Git staging because the
-worktree `index.lock` could not be created without elevated permission. The
-controller verified the changes and will create the Task 14 commit through the
-approved elevated Git path. `make test` remains unavailable on this Windows host
-because Make is not installed; `python -m pytest -q` passed.
+**Status:** Implemented in commit `013f89c`. The worker stopped at Git staging
+because the worktree `index.lock` could not be created without elevated
+permission; the controller verified the changes and created the Task 14 commit
+through the approved elevated Git path. `make test` remains unavailable on this
+Windows host because Make is not installed; `python -m pytest -q` passed.
 
 **Files:**
 - Create: `.github/workflows/unit-test.yml`
@@ -1165,7 +1165,7 @@ Run: `make test`
 
 Expected: PASS.
 
-- [ ] **Step 10: Commit and record evidence**
+- [x] **Step 10: Commit and record evidence**
 
 Run:
 
