@@ -10,6 +10,7 @@ from pathlib import Path
 import typer
 
 from pyrepair.config import RepairConfig
+from pyrepair.credentials import CredentialBackendUnavailable, CredentialStore
 from pyrepair.llm import MockLLMClient
 from pyrepair.models import RunRecord
 from pyrepair.run_controller import RunController
@@ -18,7 +19,9 @@ from pyrepair.store import JsonlRunStore
 
 app = typer.Typer(help="Run guarded pytest repair workflows.", no_args_is_help=True)
 demo_app = typer.Typer(help="Run deterministic offline demos.", no_args_is_help=True)
+key_app = typer.Typer(help="Manage provider API keys in the system keyring.", no_args_is_help=True)
 app.add_typer(demo_app, name="demo")
+app.add_typer(key_app, name="key")
 
 _FIXTURE_ROOT = Path(__file__).parents[2] / "examples" / "buggy_calculator"
 
@@ -64,6 +67,47 @@ def web() -> None:
     """Reserve the WebUI command for Task 13."""
     typer.echo("WebUI is not available until Task 13.", err=True)
     raise typer.Exit(code=1)
+
+
+@key_app.command("set")
+def set_key(
+    provider: str = typer.Option("openai", "--provider", help="Provider name."),
+    value: str = typer.Option(..., "--value", prompt=True, hide_input=True, help="API key."),
+) -> None:
+    """Store an API key without displaying it."""
+    try:
+        get_credential_store().set_key(provider, value)
+    except (CredentialBackendUnavailable, ValueError) as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1) from None
+    typer.echo(f"API key configured for {provider}.")
+
+
+@key_app.command("status")
+def key_status(provider: str = typer.Option("openai", "--provider", help="Provider name.")) -> None:
+    """Show whether a provider key is configured."""
+    try:
+        status = get_credential_store().status(provider)
+    except ValueError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1) from None
+    typer.echo(f"API key for {provider}: {status}.")
+
+
+@key_app.command("clear")
+def clear_key(provider: str = typer.Option("openai", "--provider", help="Provider name.")) -> None:
+    """Remove a provider API key without displaying it."""
+    try:
+        get_credential_store().clear_key(provider)
+    except (CredentialBackendUnavailable, ValueError) as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1) from None
+    typer.echo(f"API key cleared for {provider}.")
+
+
+def get_credential_store() -> CredentialStore:
+    """Create the default system-backed credential store for CLI commands."""
+    return CredentialStore()
 
 
 def _run_demo(script: list[str]) -> RunRecord:

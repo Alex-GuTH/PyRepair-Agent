@@ -89,3 +89,29 @@ def test_guardrail_demo_reports_approval_required_status() -> None:
     assert result.exit_code == 0, result.output
     assert "approval_required" in result.output
     assert "final status: WAITING_APPROVAL" in result.output
+
+
+def test_key_commands_store_and_report_without_printing_secret(monkeypatch: pytest.MonkeyPatch) -> None:
+    from pyrepair import cli
+    from pyrepair.credentials import CredentialStore, InMemoryCredentialBackend
+
+    store = CredentialStore(InMemoryCredentialBackend())
+    secret = "sk-test-only-cli-secret-123456"
+    monkeypatch.setattr(cli, "get_credential_store", lambda: store)
+
+    set_result = runner.invoke(
+        cli.app,
+        ["key", "set", "--provider", "openai"],
+        input=f"{secret}\n",
+    )
+    status_result = runner.invoke(cli.app, ["key", "status", "--provider", "openai"])
+    clear_result = runner.invoke(cli.app, ["key", "clear", "--provider", "openai"])
+
+    assert set_result.exit_code == 0, set_result.output
+    assert status_result.exit_code == 0, status_result.output
+    assert clear_result.exit_code == 0, clear_result.output
+    assert secret not in set_result.output
+    assert secret not in status_result.output
+    assert secret not in clear_result.output
+    assert "configured" in status_result.output
+    assert store.get_key("openai") is None
