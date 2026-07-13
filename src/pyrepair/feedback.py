@@ -35,6 +35,8 @@ def _classify(test_result: TestResult, output: str) -> FailureCategory:
         return FailureCategory.SYNTAX_ERROR
     if "ImportError" in output or "ModuleNotFoundError" in output:
         return FailureCategory.IMPORT_ERROR
+    if "ERROR collecting" in output or "during collection" in output:
+        return FailureCategory.COLLECTION_ERROR
     if "E       assert" in output:
         return FailureCategory.ASSERTION_FAILURE
     if "Traceback" in output:

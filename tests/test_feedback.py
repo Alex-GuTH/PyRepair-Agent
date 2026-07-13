@@ -32,6 +32,28 @@ def test_parses_module_not_found_error() -> None:
     assert summary.category is FailureCategory.IMPORT_ERROR
 
 
+def test_parses_pytest_collection_error() -> None:
+    summary = parse_pytest_feedback(
+        TestResult(
+            stdout="""============================= test session starts ==============================
+collecting ... collected 0 items / 1 error
+
+==================================== ERRORS ====================================
+_____________________ ERROR collecting tests/test_app.py ______________________
+tests/test_app.py:3: in <module>
+    BROKEN
+E   NameError: name 'BROKEN' is not defined
+=========================== short test summary info ============================
+ERROR tests/test_app.py - NameError: name 'BROKEN' is not defined
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+"""
+        )
+    )
+
+    assert summary.category is FailureCategory.COLLECTION_ERROR
+    assert summary.related_files == ["tests/test_app.py"]
+
+
 def test_parses_syntax_error() -> None:
     summary = parse_pytest_feedback(
         TestResult(stderr="E     File \"src/example.py\", line 3\nE       if True print('x')\nE               ^\nE   SyntaxError: invalid syntax")
