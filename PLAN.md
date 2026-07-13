@@ -544,7 +544,7 @@ Update `PLAN.md` Task 5 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 6: Pytest Feedback Parser
 
-**Status:** Complete; implementation commit `3d96df8`.
+**Status:** Complete; implementation commit `3d96df8`, evidence commit `aeade5a`.
 
 **Files:**
 - Create: `src/pyrepair/feedback.py`
