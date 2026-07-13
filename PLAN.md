@@ -459,6 +459,7 @@ protected-path handling and requires approval for protected unknown text
 suffixes.
 Fifth review-fix commit: `3fa761f`; requires approval for protected config and
 dependency directories such as `config/` and `requirements/`.
+Fifth review-fix evidence commit: `131e053`.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
