@@ -377,6 +377,8 @@ Update `PLAN.md` Task 3 status and `AGENT_LOG.md` with the commit hash.
 
 **Status:** Implemented in `d5f1e01`; TDD red verification confirmed the
 missing `pyrepair.actions` module, and green verification passed `7 passed`.
+Evidence hash recording commit: `511d841`; this review-fix commit records
+that hash separately to avoid self-reference.
 
 **Files:**
 - Create: `src/pyrepair/actions.py`
