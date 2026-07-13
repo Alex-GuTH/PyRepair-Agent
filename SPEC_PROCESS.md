@@ -207,3 +207,9 @@ Required SPEC/PLAN revisions:
   completed without whitespace errors. Local `make test` could not run because
   Make is not installed on this Windows host, so no remote CI pass is implied.
 - Task 14 delivery commit: `013f89c`.
+- The Task 14 worker was blocked only at its own normal staging attempt by the
+  worktree `index.lock` permission error. The controller then verified the
+  changes and created `013f89c` through the approved elevated Git path. The
+  original blocked wording in `.superpowers/sdd/task-14-report.md` was a
+  time-specific worker record, not the only exact source of final Task 14
+  history; the report now records this later controller action as well.

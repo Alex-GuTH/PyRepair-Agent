@@ -12,6 +12,28 @@ def test_ci_and_container_delivery_files_exist() -> None:
     assert (PROJECT_ROOT / "Dockerfile").is_file()
 
 
+def test_ci_configs_run_the_canonical_offline_test_command() -> None:
+    github_workflow = (
+        PROJECT_ROOT / ".github" / "workflows" / "unit-test.yml"
+    ).read_text(encoding="utf-8")
+    gitlab_config = (PROJECT_ROOT / ".gitlab-ci.yml").read_text(encoding="utf-8")
+
+    for required_step in (
+        "uses: actions/checkout@",
+        "uses: actions/setup-python@",
+        'python -m pip install ".[dev]"',
+        "run: make test",
+    ):
+        assert required_step in github_workflow
+
+    assert (
+        "unit-test:\n"
+        "  script:\n"
+        '    - python -m pip install ".[dev]"\n'
+        "    - make test"
+    ) in gitlab_config
+
+
 def test_dockerfile_keeps_source_tree_available_for_mock_demos() -> None:
     dockerfile = (PROJECT_ROOT / "Dockerfile").read_text(encoding="utf-8")
 
