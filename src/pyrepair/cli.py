@@ -72,9 +72,9 @@ def web() -> None:
 @key_app.command("set")
 def set_key(
     provider: str = typer.Option("openai", "--provider", help="Provider name."),
-    value: str = typer.Option(..., "--value", prompt=True, hide_input=True, help="API key."),
 ) -> None:
     """Store an API key without displaying it."""
+    value = typer.prompt("API key", hide_input=True)
     try:
         get_credential_store().set_key(provider, value)
     except (CredentialBackendUnavailable, ValueError) as error:
@@ -88,7 +88,7 @@ def key_status(provider: str = typer.Option("openai", "--provider", help="Provid
     """Show whether a provider key is configured."""
     try:
         status = get_credential_store().status(provider)
-    except ValueError as error:
+    except (CredentialBackendUnavailable, ValueError) as error:
         typer.echo(str(error), err=True)
         raise typer.Exit(code=1) from None
     typer.echo(f"API key for {provider}: {status}.")

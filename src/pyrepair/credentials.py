@@ -44,7 +44,7 @@ class UnavailableCredentialBackend:
         raise CredentialBackendUnavailable("System keyring support is unavailable.")
 
     def get_password(self, service_name: str, username: str) -> str | None:
-        return None
+        raise CredentialBackendUnavailable("System credential storage is unavailable.")
 
     def delete_password(self, service_name: str, username: str) -> None:
         raise CredentialBackendUnavailable("System keyring support is unavailable.")
@@ -57,16 +57,30 @@ class CredentialStore:
         self._backend = backend or _system_backend()
 
     def set_key(self, provider: str, value: str) -> None:
-        self._backend.set_password(_SERVICE_NAME, _provider_name(provider), _key_value(value))
+        self._call_backend(
+            self._backend.set_password,
+            _SERVICE_NAME,
+            _provider_name(provider),
+            _key_value(value),
+        )
 
     def get_key(self, provider: str) -> str | None:
-        return self._backend.get_password(_SERVICE_NAME, _provider_name(provider))
+        return self._call_backend(self._backend.get_password, _SERVICE_NAME, _provider_name(provider))
 
     def clear_key(self, provider: str) -> None:
-        self._backend.delete_password(_SERVICE_NAME, _provider_name(provider))
+        self._call_backend(self._backend.delete_password, _SERVICE_NAME, _provider_name(provider))
 
     def status(self, provider: str) -> str:
         return "configured" if self.get_key(provider) else "not configured"
+
+    @staticmethod
+    def _call_backend(method, *args):
+        try:
+            return method(*args)
+        except CredentialBackendUnavailable:
+            raise
+        except Exception:
+            raise CredentialBackendUnavailable("Unable to access system credential storage.") from None
 
 
 def redact_key(value: str) -> str:

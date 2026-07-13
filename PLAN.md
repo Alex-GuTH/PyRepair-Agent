@@ -947,7 +947,10 @@ Update `PLAN.md` Task 11 status and `AGENT_LOG.md` with the commit hash.
 `6136891`. TDD red verification failed because
 `pyrepair.credentials` was absent; focused green verification passed `8 passed`.
 `make test` is unavailable in this Windows environment, and the equivalent
-`python -m pytest -q` verification passed `95 passed`.
+`python -m pytest -q` verification passed `95 passed`. Review fix: `key set`
+no longer accepts command-line secrets and backend status failures are explicit;
+focused review verification passed `11 passed`, and full verification passed
+`98 passed`.
 
 **Files:**
 - Create: `src/pyrepair/credentials.py`

@@ -115,3 +115,30 @@ def test_key_commands_store_and_report_without_printing_secret(monkeypatch: pyte
     assert secret not in clear_result.output
     assert "configured" in status_result.output
     assert store.get_key("openai") is None
+
+
+def test_key_set_does_not_accept_a_command_line_secret() -> None:
+    from pyrepair.cli import app
+
+    result = runner.invoke(app, ["key", "set", "--value", "sk-test-only-cli-secret-123456"])
+
+    assert result.exit_code != 0
+    assert "--value" in result.output
+
+
+def test_key_status_reports_backend_failure_without_a_secret(monkeypatch: pytest.MonkeyPatch) -> None:
+    from pyrepair import cli
+    from pyrepair.credentials import CredentialStore
+
+    class FailingBackend:
+        def get_password(self, service_name: str, username: str) -> str | None:
+            raise OSError("credential backend unavailable")
+
+    secret = "sk-test-only-cli-secret-123456"
+    monkeypatch.setattr(cli, "get_credential_store", lambda: CredentialStore(FailingBackend()))
+
+    result = runner.invoke(cli.app, ["key", "status", "--provider", "openai"])
+
+    assert result.exit_code != 0
+    assert "credential storage" in result.output
+    assert secret not in result.output
