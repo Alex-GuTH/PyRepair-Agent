@@ -669,6 +669,8 @@ Update `PLAN.md` Task 7 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 8: Run Store
 
+**Status:** Implemented; commit evidence pending.
+
 **Files:**
 - Create: `src/pyrepair/store.py`
 - Create: `tests/test_store.py`
@@ -682,27 +684,27 @@ Update `PLAN.md` Task 7 status and `AGENT_LOG.md` with the commit hash.
   - `get_run(run_id: str) -> RunRecord`
   - `list_runs() -> list[RunRecord]`
 
-- [ ] **Step 1: Write failing run store tests**
+- [x] **Step 1: Write failing run store tests**
 
 Test that a run can be created, a step appended, and the run loaded from disk.
 
-- [ ] **Step 2: Run red verification**
+- [x] **Step 2: Run red verification**
 
 Run: `python -m pytest tests/test_store.py -q`
 
 Expected: FAIL because `pyrepair.store` does not exist.
 
-- [ ] **Step 3: Implement append-only JSONL store**
+- [x] **Step 3: Implement append-only JSONL store**
 
 Store one JSONL file per run under a configurable run directory. Serialize dataclasses and enums into JSON-safe dicts. Never store API keys.
 
-- [ ] **Step 4: Run green verification**
+- [x] **Step 4: Run green verification**
 
 Run: `python -m pytest tests/test_store.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit and record evidence**
+- [x] **Step 5: Commit and record evidence**
 
 Run:
 
