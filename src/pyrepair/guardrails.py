@@ -11,6 +11,7 @@ from pyrepair.models import Action, ActionType, GuardrailDecision, GuardrailDeci
 BINARY_FILE_EXTENSIONS = frozenset(
     {
         ".7z",
+        ".bin",
         ".bmp",
         ".class",
         ".dll",
@@ -29,6 +30,26 @@ BINARY_FILE_EXTENSIONS = frozenset(
         ".tar",
         ".webp",
         ".zip",
+    }
+)
+
+PROTECTED_FILE_NAMES = frozenset(
+    {
+        "pyproject.toml",
+        "setup.py",
+        "setup.cfg",
+        "tox.ini",
+        "pytest.ini",
+        ".coveragerc",
+        "pipfile",
+        "poetry.lock",
+        "uv.lock",
+        "package.json",
+        "package-lock.json",
+        "yarn.lock",
+        "pnpm-lock.yaml",
+        ".gitlab-ci.yml",
+        "makefile",
     }
 )
 
@@ -141,36 +162,26 @@ def _is_sensitive(path: Path) -> bool:
 
 
 def _is_binary(path: Path) -> bool:
-    return path.suffix.lower() in BINARY_FILE_EXTENSIONS
+    return path.suffix.lower() in BINARY_FILE_EXTENSIONS or (
+        not path.suffix and not _is_known_protected_text_file(path)
+    )
+
+
+def _is_known_protected_text_file(path: Path) -> bool:
+    name = path.name.lower()
+    return name in PROTECTED_FILE_NAMES or name.startswith("requirements")
 
 
 def _requires_write_approval(path: Path, project_root: Path) -> bool:
     path_parts = tuple(part.lower() for part in path.relative_to(project_root).parts)
     parts = set(path_parts)
     name = path.name.lower()
-    protected_names = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "tox.ini",
-        "pytest.ini",
-        ".coveragerc",
-        "pipfile",
-        "poetry.lock",
-        "uv.lock",
-        "package.json",
-        "package-lock.json",
-        "yarn.lock",
-        "pnpm-lock.yaml",
-        ".gitlab-ci.yml",
-    }
     return (
         bool(parts & {"test", "tests", "docs", ".github", ".gitlab", ".circleci", "build", "dist", "__pycache__"})
         or any("generated" in part for part in path_parts)
         or name.startswith("test_")
         or name.endswith("_test.py")
-        or name in protected_names
-        or name.startswith("requirements")
+        or _is_known_protected_text_file(path)
         or path.suffix.lower() in {".md", ".rst", ".txt", ".toml", ".ini", ".cfg", ".yaml", ".yml", ".lock", ".pyc"}
     )
 
