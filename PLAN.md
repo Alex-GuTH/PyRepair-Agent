@@ -719,8 +719,8 @@ Update `PLAN.md` Task 8 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 9: LLM Clients and Mock Scripts
 
-**Status:** Implemented in `9e71f2e`; TDD red verification confirmed the
-missing `pyrepair.llm` module, and green verification passed.
+**Status:** Complete; implementation commit `9e71f2e`, evidence commit
+`221e557`.
 
 **Files:**
 - Create: `src/pyrepair/llm.py`
