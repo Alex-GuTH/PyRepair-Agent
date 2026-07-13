@@ -728,31 +728,31 @@ Update `PLAN.md` Task 8 status and `AGENT_LOG.md` with the commit hash.
 - Produces `MockLLMClient(script: list[str])`.
 - Produces `OpenAICompatibleLLMClient(base_url: str, model: str, api_key: str)`.
 
-- [ ] **Step 1: Write failing mock LLM tests**
+- [x] **Step 1: Write failing mock LLM tests**
 
 Assert `MockLLMClient` returns scripted responses in order and raises a clear error when exhausted.
 
-- [ ] **Step 2: Write failing OpenAI-compatible request-shape test**
+- [x] **Step 2: Write failing OpenAI-compatible request-shape test**
 
 Use monkeypatching or a fake HTTP transport. Assert the client sends `model`, `messages`, and `Authorization: Bearer <key>` to `/chat/completions` or the configured compatible endpoint. Do not call the network.
 
-- [ ] **Step 3: Run red verification**
+- [x] **Step 3: Run red verification**
 
 Run: `python -m pytest tests/test_llm.py -q`
 
 Expected: FAIL because `pyrepair.llm` does not exist.
 
-- [ ] **Step 4: Implement clients**
+- [x] **Step 4: Implement clients**
 
 Implement mock client and OpenAI-compatible client. Add timeout handling and response-shape errors. Do not log API keys.
 
-- [ ] **Step 5: Run green verification**
+- [x] **Step 5: Run green verification**
 
 Run: `python -m pytest tests/test_llm.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit and record evidence**
+- [x] **Step 6: Commit and record evidence**
 
 Run:
 
