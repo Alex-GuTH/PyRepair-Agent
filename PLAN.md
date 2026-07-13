@@ -950,7 +950,7 @@ Update `PLAN.md` Task 11 status and `AGENT_LOG.md` with the commit hash.
 `python -m pytest -q` verification passed `95 passed`. Review fix: `key set`
 no longer accepts command-line secrets and backend status failures are explicit;
 focused review verification passed `11 passed`, and full verification passed
-`98 passed`.
+`98 passed`. Review-fix commit `1637804`.
 
 **Files:**
 - Create: `src/pyrepair/credentials.py`
