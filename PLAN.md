@@ -448,9 +448,9 @@ Evidence hash recording commit: `065ed55`; this hash-recording commit records
 that value separately to avoid self-reference.
 Review fix commit: `c1e54c6`; adds generated-path approval, binary-write
 rejection, and certificate-file protection with regression TDD evidence.
-Second review fix: reject `.bin` and unknown extensionless writes while keeping
-known protected text/config targets approval-required. Implementation and
-evidence commit: pending.
+Second review fix commit: `8e200ff`; rejects `.bin` and unknown extensionless
+writes while keeping known protected text/config targets approval-required.
+Evidence hash recording commit: pending.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
