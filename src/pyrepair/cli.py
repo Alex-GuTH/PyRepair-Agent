@@ -63,10 +63,16 @@ def full_demo() -> None:
 
 
 @app.command()
-def web() -> None:
-    """Reserve the WebUI command for Task 13."""
-    typer.echo("WebUI is not available until Task 13.", err=True)
-    raise typer.Exit(code=1)
+def web(
+    host: str = typer.Option("127.0.0.1", help="Local interface to bind."),
+    port: int = typer.Option(8000, min=1, max=65535, help="Local port to bind."),
+) -> None:
+    """Start the local demo-only WebUI."""
+    import uvicorn
+
+    from pyrepair.web import create_app
+
+    uvicorn.run(create_app(), host=host, port=port)
 
 
 @key_app.command("set")

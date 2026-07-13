@@ -1029,11 +1029,11 @@ Update `PLAN.md` Task 12 status and `AGENT_LOG.md` with the commit hash.
   - `POST /api/demo/feedback-loop`
   - `POST /api/demo/guardrail`
 
-- [ ] **Step 1: Record Open Design decision**
+- [x] **Step 1: Record Open Design decision**
 
 Consult available Open Design guidance or note unavailability. Add the decision to `AGENT_LOG.md`. The WebUI must be an operational console with run timeline, failure summary, diff, and guardrail sections.
 
-- [ ] **Step 2: Write failing WebUI API tests**
+- [x] **Step 2: Write failing WebUI API tests**
 
 Use FastAPI test client. Assert:
 
@@ -1041,27 +1041,27 @@ Use FastAPI test client. Assert:
 - `POST /api/demo/guardrail` returns a run with waiting approval status;
 - `GET /api/runs` returns JSON list.
 
-- [ ] **Step 3: Run red verification**
+- [x] **Step 3: Run red verification**
 
 Run: `python -m pytest tests/test_web.py -q`
 
 Expected: FAIL because web app does not exist.
 
-- [ ] **Step 4: Implement WebUI app**
+- [x] **Step 4: Implement WebUI app**
 
 Implement mock/demo-only endpoints first. Serve simple HTML and static assets. Do not expose arbitrary host paths in public demo endpoints.
 
-- [ ] **Step 5: Wire `pyrepair web`**
+- [x] **Step 5: Wire `pyrepair web`**
 
 Update CLI to start the FastAPI app with localhost binding by default.
 
-- [ ] **Step 6: Run green verification**
+- [x] **Step 6: Run green verification**
 
 Run: `python -m pytest tests/test_web.py tests/test_cli.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 7: Run full offline tests**
+- [x] **Step 7: Run full offline tests**
 
 Run: `make test`
 

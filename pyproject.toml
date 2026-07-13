@@ -7,7 +7,7 @@ name = "pyrepair-agent"
 version = "0.1.0"
 description = "A Python and pytest test-repair coding agent harness."
 requires-python = ">=3.11"
-dependencies = ["typer>=0.26.8"]
+dependencies = ["typer>=0.26.8", "fastapi>=0.139.0", "uvicorn>=0.51.0"]
 
 [project.scripts]
 pyrepair = "pyrepair.cli:app"
