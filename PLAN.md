@@ -462,6 +462,9 @@ dependency directories such as `config/` and `requirements/`.
 Fifth review-fix evidence commit: `131e053`.
 Sixth review-fix commit: `2f12973`; rejects conventional private identity-key
 paths such as `id_rsa` and `id_ed25519` as sensitive files.
+Sixth review-fix evidence commit: `61b1bb6`.
+Seventh review-fix commit: pending; protects common secret filenames and
+requires approval for root-level common configuration files.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`

@@ -69,6 +69,17 @@ PROTECTED_FILE_NAMES = frozenset(
     }
 )
 
+ROOT_CONFIG_FILE_NAMES = frozenset(
+    {
+        "appsettings.json",
+        "config.json",
+        "config.yaml",
+        "config.yml",
+        "configuration.json",
+        "settings.json",
+    }
+)
+
 PROTECTED_DIRECTORIES = frozenset({"config", "configs", "requirements"})
 
 IDENTITY_KEY_FILE_NAMES = frozenset(
@@ -179,7 +190,16 @@ def _resolve_project_path(
 
 def _is_sensitive(path: Path) -> bool:
     name = path.name.lower()
-    sensitive_markers = ("secret", "credential", "token", "private")
+    sensitive_markers = (
+        "api_key",
+        "apikey",
+        "password",
+        "passwd",
+        "secret",
+        "credential",
+        "token",
+        "private",
+    )
     return (
         name == ".env"
         or name.startswith(".env.")
@@ -195,7 +215,11 @@ def _is_clearly_binary(path: Path) -> bool:
 
 def _is_known_protected_text_file(path: Path) -> bool:
     name = path.name.lower()
-    return name in PROTECTED_FILE_NAMES or name.startswith("requirements")
+    return (
+        name in PROTECTED_FILE_NAMES
+        or name in ROOT_CONFIG_FILE_NAMES
+        or name.startswith("requirements")
+    )
 
 
 def _requires_write_approval(path: Path, project_root: Path) -> bool:

@@ -22,6 +22,26 @@ def test_rejects_env_file_read(tmp_path):
     assert decision.policy_code == "sensitive_file"
 
 
+@pytest.mark.parametrize("path", ["api_key.txt", "passwords.txt"])
+def test_rejects_common_secret_file_read(tmp_path, path):
+    action = Action(type=ActionType.READ_FILE, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "sensitive_file"
+
+
+@pytest.mark.parametrize("path", ["api_key.txt", "passwords.txt"])
+def test_rejects_common_secret_file_write(tmp_path, path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "sensitive_file"
+
+
 def test_allows_ordinary_python_source_write(tmp_path):
     action = Action(type=ActionType.APPLY_PATCH, payload={"path": "src/repair.py"})
 
@@ -91,6 +111,15 @@ def test_rejects_unknown_extension_asset_write(tmp_path, path):
 
 def test_requires_approval_for_extensionless_makefile_write(tmp_path):
     action = Action(type=ActionType.APPLY_PATCH, payload={"path": "Makefile"})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED
+    assert decision.policy_code == "protected_write_approval_required"
+
+
+def test_requires_approval_for_root_config_write(tmp_path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": "config.json"})
 
     decision = evaluate_action(action, tmp_path, GuardrailPolicy())
 
