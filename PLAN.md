@@ -1082,6 +1082,12 @@ Update `PLAN.md` Task 13 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 14: CI, Docker, README, and Final Process Docs
 
+**Status:** Implemented locally; the worker stopped at Git staging because the
+worktree `index.lock` could not be created without elevated permission. The
+controller verified the changes and will create the Task 14 commit through the
+approved elevated Git path. `make test` remains unavailable on this Windows host
+because Make is not installed; `python -m pytest -q` passed.
+
 **Files:**
 - Create: `.github/workflows/unit-test.yml`
 - Create: `.gitlab-ci.yml`
@@ -1097,7 +1103,7 @@ Update `PLAN.md` Task 13 status and `AGENT_LOG.md` with the commit hash.
 - Produces Docker image that can run mock demos.
 - Produces README sections required by the course.
 
-- [ ] **Step 1: Write failing CI presence test**
+- [x] **Step 1: Write failing CI presence test**
 
 Add a test in `tests/test_project_files.py` asserting:
 
@@ -1107,25 +1113,25 @@ Add a test in `tests/test_project_files.py` asserting:
 - `Dockerfile` exists;
 - `README.md` contains installation, running, distribution, key setup, known limits, and safety boundaries headings.
 
-- [ ] **Step 2: Run red verification**
+- [x] **Step 2: Run red verification**
 
 Run: `python -m pytest tests/test_project_files.py -q`
 
 Expected: FAIL because required files do not exist.
 
-- [ ] **Step 3: Add GitHub Actions workflow**
+- [x] **Step 3: Add GitHub Actions workflow**
 
 Create workflow that checks out code, sets up Python, installs package with dev dependencies, and runs `make test`.
 
-- [ ] **Step 4: Add GitLab CI**
+- [x] **Step 4: Add GitLab CI**
 
 Create `.gitlab-ci.yml` with a job named `unit-test` that runs the same offline test command.
 
-- [ ] **Step 5: Add Dockerfile**
+- [x] **Step 5: Add Dockerfile**
 
 Create Dockerfile that installs the package and defaults to a command that can run mock demo or WebUI mock/demo-only mode.
 
-- [ ] **Step 6: Write README**
+- [x] **Step 6: Write README**
 
 Include:
 
@@ -1143,17 +1149,17 @@ Include:
 - known limitations;
 - CI commands.
 
-- [ ] **Step 7: Prepare REFLECTION skeleton**
+- [x] **Step 7: Prepare REFLECTION skeleton**
 
 Create `REFLECTION.md` with headings from the course requirements. Leave no fake reflection text before implementation evidence exists. Use neutral section prompts that the student will complete at the end.
 
-- [ ] **Step 8: Run green verification**
+- [x] **Step 8: Run green verification**
 
 Run: `python -m pytest tests/test_project_files.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 9: Run full offline tests**
+- [x] **Step 9: Run full offline tests**
 
 Run: `make test`
 

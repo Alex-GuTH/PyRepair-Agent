@@ -184,3 +184,25 @@ Required SPEC/PLAN revisions:
 - Local `make test` could not run because Make is unavailable on this Windows
   environment; the underlying `python -m pytest -q` command passed and CI must
   validate `make test`.
+
+## 8. Task 14 Delivery Evidence
+
+- Task 14 began with a repository-level contract test for the two CI files, the
+  Dockerfile, and required README headings. The initial RED run failed because
+  the workflow and README did not exist.
+- The delivery configuration keeps the same offline entry point across GitHub
+  Actions and GitLab CI: install the project with development dependencies, then
+  run `make test`.
+- The Docker image uses an editable install so the source-tree demo fixtures
+  remain available to the default deterministic mock demonstration. The WebUI
+  remains explicitly demo-only when started locally.
+- README guidance documents installation, commands, distribution, credential
+  handling, plaintext `.env` risk, guardrails, limits, and the difference
+  between local evidence and unverified remote CI.
+- `REFLECTION.md` is a neutral student-completion template rather than a record
+  of fabricated outcomes. Exact Task 14 RED/GREEN and final verification output
+  is recorded in `.superpowers/sdd/task-14-report.md`.
+- Focused GREEN verification passed `3 passed`; the full offline pytest suite
+  passed `105 passed` with one third-party deprecation warning. `git diff --check`
+  completed without whitespace errors. Local `make test` could not run because
+  Make is not installed on this Windows host, so no remote CI pass is implied.
