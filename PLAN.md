@@ -460,6 +460,8 @@ suffixes.
 Fifth review-fix commit: `3fa761f`; requires approval for protected config and
 dependency directories such as `config/` and `requirements/`.
 Fifth review-fix evidence commit: `131e053`.
+Sixth review-fix commit: pending; rejects conventional private identity-key
+paths such as `id_rsa` and `id_ed25519` as sensitive files.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`

@@ -119,6 +119,17 @@ def test_rejects_certificate_file_access(tmp_path, path, action_type):
     assert decision.policy_code == "sensitive_file"
 
 
+@pytest.mark.parametrize("path", [".ssh/id_rsa", ".ssh/id_ed25519"])
+@pytest.mark.parametrize("action_type", [ActionType.READ_FILE, ActionType.APPLY_PATCH])
+def test_rejects_identity_key_file_access(tmp_path, path, action_type):
+    action = Action(type=action_type, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "sensitive_file"
+
+
 def test_allows_source_write_when_project_root_is_named_tests(tmp_path):
     project_root = tmp_path / "tests"
     project_root.mkdir()

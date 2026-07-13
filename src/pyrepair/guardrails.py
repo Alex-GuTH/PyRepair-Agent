@@ -71,6 +71,17 @@ PROTECTED_FILE_NAMES = frozenset(
 
 PROTECTED_DIRECTORIES = frozenset({"config", "configs", "requirements"})
 
+IDENTITY_KEY_FILE_NAMES = frozenset(
+    {
+        "id_dsa",
+        "id_ecdsa",
+        "id_ecdsa_sk",
+        "id_ed25519",
+        "id_ed25519_sk",
+        "id_rsa",
+    }
+)
+
 
 @dataclass(frozen=True)
 class GuardrailPolicy:
@@ -172,6 +183,7 @@ def _is_sensitive(path: Path) -> bool:
     return (
         name == ".env"
         or name.startswith(".env.")
+        or name in IDENTITY_KEY_FILE_NAMES
         or any(marker in name for marker in sensitive_markers)
         or path.suffix.lower() in {".cer", ".crt", ".key", ".pem", ".p12", ".pfx"}
     )
