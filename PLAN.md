@@ -951,6 +951,7 @@ Update `PLAN.md` Task 11 status and `AGENT_LOG.md` with the commit hash.
 no longer accepts command-line secrets and backend status failures are explicit;
 focused review verification passed `11 passed`, and full verification passed
 `98 passed`. Review-fix commit `1637804`.
+Review-fix evidence commit `a9e02a5`.
 
 **Files:**
 - Create: `src/pyrepair/credentials.py`
