@@ -36,6 +36,8 @@ _SENSITIVE_KEY_MARKERS = (
 )
 _SECRET_VALUE_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9._-]+"),
+    re.compile(r"(?i)(Authorization\s*:\s*Bearer\s+)[^'\"\s,;]+"),
+    re.compile(r"(?i)([A-Z0-9_-]*KEY\s*[:=]\s*)['\"]?[^'\"\s,;]+"),
     re.compile(
         r"(?i)(OPENAI_API_KEY|API_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|PRIVATE_KEY)\s*=\s*['\"]?[^'\"\s,;]+"
     ),

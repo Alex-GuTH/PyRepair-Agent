@@ -139,3 +139,30 @@ def test_store_redacts_secrets_in_unstructured_text_fields(tmp_path: Path) -> No
 
     assert secret not in stored_text
     assert "[REDACTED]" in stored_text
+
+
+def test_store_redacts_common_auth_headers_and_key_assignments(tmp_path: Path) -> None:
+    store = JsonlRunStore(tmp_path)
+    secret = "rk-live-provider-secret-456"
+    run = RunRecord(id="run-005", project_root="C:/projects/secret")
+    step = RunStep(
+        run_id=run.id,
+        round_index=1,
+        context_summary=f"Authorization: Bearer {secret}",
+        action=Action(
+            type=ActionType.RUN_TESTS,
+            raw_model_output=f"X-API-Key: {secret}",
+        ),
+        tool_result=ToolResult(
+            tool_name="pytest",
+            stderr_summary=f"PROVIDER_KEY={secret}",
+        ),
+    )
+
+    store.create_run(run)
+    store.append_step(run.id, step)
+
+    stored_text = (tmp_path / "run-005.jsonl").read_text(encoding="utf-8")
+
+    assert secret not in stored_text
+    assert "[REDACTED]" in stored_text
