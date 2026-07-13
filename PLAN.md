@@ -720,7 +720,8 @@ Update `PLAN.md` Task 8 status and `AGENT_LOG.md` with the commit hash.
 ### Task 9: LLM Clients and Mock Scripts
 
 **Status:** Complete; implementation commit `9e71f2e`, evidence commit
-`221e557`.
+`221e557`. Review-fix commit `6b0c882` prevents transport exception chains
+from leaking API keys in formatted tracebacks.
 
 **Files:**
 - Create: `src/pyrepair/llm.py`
