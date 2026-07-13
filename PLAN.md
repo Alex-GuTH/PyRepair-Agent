@@ -865,6 +865,7 @@ the equivalent `python -m pytest -q` verification passed `91 passed`.
 Review fix: unconfigured `OPENAI_COMPATIBLE` runs now fail explicitly instead
 of silently using mock; focused review verification passed `5 passed`, and full
 verification passed `92 passed`. Review-fix commit `435494a`.
+Review-fix evidence commit `0c4cf48`.
 
 **Files:**
 - Create: `src/pyrepair/config.py`
