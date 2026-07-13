@@ -8,6 +8,31 @@ from pathlib import Path
 from pyrepair.models import Action, ActionType, GuardrailDecision, GuardrailDecisionType
 
 
+BINARY_FILE_EXTENSIONS = frozenset(
+    {
+        ".7z",
+        ".bmp",
+        ".class",
+        ".dll",
+        ".exe",
+        ".gif",
+        ".gz",
+        ".ico",
+        ".jar",
+        ".jpeg",
+        ".jpg",
+        ".mp3",
+        ".mp4",
+        ".pdf",
+        ".png",
+        ".so",
+        ".tar",
+        ".webp",
+        ".zip",
+    }
+)
+
+
 @dataclass(frozen=True)
 class GuardrailPolicy:
     """Safe defaults for file writes and pytest execution."""
@@ -48,6 +73,8 @@ def evaluate_action(
             resolved_paths.append(resolved)
 
         root = project_root.resolve()
+        if any(_is_binary(path) for path in resolved_paths):
+            return _reject("binary_write_not_allowed", "Binary file writes are not allowed.")
         if any(_requires_write_approval(path, root) for path in resolved_paths):
             return _approval(
                 "protected_write_approval_required",
@@ -109,12 +136,17 @@ def _is_sensitive(path: Path) -> bool:
         name == ".env"
         or name.startswith(".env.")
         or any(marker in name for marker in sensitive_markers)
-        or path.suffix.lower() in {".key", ".pem", ".p12", ".pfx"}
+        or path.suffix.lower() in {".cer", ".crt", ".key", ".pem", ".p12", ".pfx"}
     )
 
 
+def _is_binary(path: Path) -> bool:
+    return path.suffix.lower() in BINARY_FILE_EXTENSIONS
+
+
 def _requires_write_approval(path: Path, project_root: Path) -> bool:
-    parts = {part.lower() for part in path.relative_to(project_root).parts}
+    path_parts = tuple(part.lower() for part in path.relative_to(project_root).parts)
+    parts = set(path_parts)
     name = path.name.lower()
     protected_names = {
         "pyproject.toml",
@@ -134,6 +166,7 @@ def _requires_write_approval(path: Path, project_root: Path) -> bool:
     }
     return (
         bool(parts & {"test", "tests", "docs", ".github", ".gitlab", ".circleci", "build", "dist", "__pycache__"})
+        or any("generated" in part for part in path_parts)
         or name.startswith("test_")
         or name.endswith("_test.py")
         or name in protected_names

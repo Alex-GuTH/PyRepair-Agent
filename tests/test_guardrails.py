@@ -1,5 +1,6 @@
 from pyrepair.guardrails import GuardrailPolicy, evaluate_action
 from pyrepair.models import Action, ActionType, GuardrailDecisionType
+import pytest
 
 
 def test_rejects_read_outside_project(tmp_path):
@@ -28,6 +29,36 @@ def test_allows_ordinary_python_source_write(tmp_path):
 
     assert decision.decision is GuardrailDecisionType.ALLOW
     assert decision.policy_code == "source_write_allowed"
+
+
+@pytest.mark.parametrize("path", ["generated/repair.py", "src/repair_generated.py"])
+def test_requires_approval_for_generated_python_write(tmp_path, path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.APPROVAL_REQUIRED
+    assert decision.policy_code == "protected_write_approval_required"
+
+
+def test_rejects_binary_write(tmp_path):
+    action = Action(type=ActionType.APPLY_PATCH, payload={"path": "assets/logo.png"})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "binary_write_not_allowed"
+
+
+@pytest.mark.parametrize("path", ["certs/service.crt", "certs/service.cer"])
+@pytest.mark.parametrize("action_type", [ActionType.READ_FILE, ActionType.APPLY_PATCH])
+def test_rejects_certificate_file_access(tmp_path, path, action_type):
+    action = Action(type=action_type, payload={"path": path})
+
+    decision = evaluate_action(action, tmp_path, GuardrailPolicy())
+
+    assert decision.decision is GuardrailDecisionType.REJECT
+    assert decision.policy_code == "sensitive_file"
 
 
 def test_allows_source_write_when_project_root_is_named_tests(tmp_path):

@@ -446,6 +446,8 @@ Update `PLAN.md` Task 4 status and `AGENT_LOG.md` with the commit hash.
 `pyrepair.guardrails` module, and green verification passed `8 passed`.
 Evidence hash recording commit: `065ed55`; this hash-recording commit records
 that value separately to avoid self-reference.
+Review fix commit: `PENDING`; adds generated-path approval, binary-write
+rejection, and certificate-file protection with regression TDD evidence.
 
 **Files:**
 - Create: `src/pyrepair/guardrails.py`
