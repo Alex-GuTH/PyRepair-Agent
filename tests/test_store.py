@@ -166,3 +166,27 @@ def test_store_redacts_common_auth_headers_and_key_assignments(tmp_path: Path) -
 
     assert secret not in stored_text
     assert "[REDACTED]" in stored_text
+
+
+def test_store_redacts_access_key_and_non_bearer_authorization(tmp_path: Path) -> None:
+    store = JsonlRunStore(tmp_path)
+    secret = "rk-live-provider-secret-789"
+    run = RunRecord(id="run-006", project_root="C:/projects/secret")
+    step = RunStep(
+        run_id=run.id,
+        round_index=1,
+        context_summary=f"Authorization: Token {secret}",
+        action=Action(
+            type=ActionType.READ_FILE,
+            payload={"access_key": secret},
+            raw_model_output=f'{{"access_key":"{secret}"}}',
+        ),
+    )
+
+    store.create_run(run)
+    store.append_step(run.id, step)
+
+    stored_text = (tmp_path / "run-006.jsonl").read_text(encoding="utf-8")
+
+    assert secret not in stored_text
+    assert "[REDACTED]" in stored_text

@@ -26,6 +26,7 @@ from pyrepair.models import (
 
 _REDACTED = "[REDACTED]"
 _SENSITIVE_KEY_MARKERS = (
+    "access_key",
     "api_key",
     "apikey",
     "token",
@@ -36,16 +37,16 @@ _SENSITIVE_KEY_MARKERS = (
 )
 _SECRET_VALUE_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9._-]+"),
-    re.compile(r"(?i)(Authorization\s*:\s*Bearer\s+)[^'\"\s,;]+"),
+    re.compile(r"(?i)(Authorization\s*:\s*[A-Za-z]+\s+)[^'\"\s,;]+"),
     re.compile(r"(?i)([A-Z0-9_-]*KEY\s*[:=]\s*)['\"]?[^'\"\s,;]+"),
     re.compile(
-        r"(?i)(OPENAI_API_KEY|API_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|PRIVATE_KEY)\s*=\s*['\"]?[^'\"\s,;]+"
+        r"(?i)(OPENAI_API_KEY|API_KEY|ACCESS_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|PRIVATE_KEY)\s*=\s*['\"]?[^'\"\s,;]+"
     ),
     re.compile(
-        r"(?i)([\"']?(?:api_key|apikey|token|secret|password|credential|private_key)[\"']?\s*:\s*[\"'])[^\"']+([\"'])"
+        r"(?i)([\"']?(?:access_key|api_key|apikey|token|secret|password|credential|private_key)[\"']?\s*:\s*[\"'])[^\"']+([\"'])"
     ),
     re.compile(
-        r"(?i)((?:api_key|apikey|token|secret|password|credential|private_key)\s*:\s*)[^,\s;]+"
+        r"(?i)((?:access_key|api_key|apikey|token|secret|password|credential|private_key)\s*:\s*)[^,\s;]+"
     ),
 )
 
