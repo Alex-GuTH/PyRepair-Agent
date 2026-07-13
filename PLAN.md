@@ -544,6 +544,8 @@ Update `PLAN.md` Task 5 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 6: Pytest Feedback Parser
 
+**Status:** Implemented; commit evidence pending.
+
 **Files:**
 - Create: `src/pyrepair/feedback.py`
 - Create: `tests/test_feedback.py`
@@ -552,11 +554,11 @@ Update `PLAN.md` Task 5 status and `AGENT_LOG.md` with the commit hash.
 - Consumes `TestResult`, `FailureSummary`, `FailureCategory`.
 - Produces `parse_pytest_feedback(test_result: TestResult) -> FailureSummary`.
 
-- [ ] **Step 1: Write failing assertion parser test**
+- [x] **Step 1: Write failing assertion parser test**
 
 Use a pytest output fixture containing `E       assert 4 == 3` and a failed test path. Assert category `ASSERTION_FAILURE`, failed test name, and related file extraction.
 
-- [ ] **Step 2: Write failing exception/import/syntax/timeout tests**
+- [x] **Step 2: Write failing exception/import/syntax/timeout tests**
 
 Use bounded string fixtures for:
 
@@ -565,13 +567,13 @@ Use bounded string fixtures for:
 - traceback with `ValueError`;
 - `timed_out=True`.
 
-- [ ] **Step 3: Run red verification**
+- [x] **Step 3: Run red verification**
 
 Run: `python -m pytest tests/test_feedback.py -q`
 
 Expected: FAIL because `pyrepair.feedback` does not exist.
 
-- [ ] **Step 4: Implement parser**
+- [x] **Step 4: Implement parser**
 
 Implement conservative parsing:
 
@@ -582,7 +584,7 @@ Implement conservative parsing:
 - if output contains `Traceback`, return `RUNTIME_EXCEPTION`;
 - otherwise return `UNKNOWN_FAILURE`.
 
-- [ ] **Step 5: Run green verification**
+- [x] **Step 5: Run green verification**
 
 Run: `python -m pytest tests/test_feedback.py -q`
 
