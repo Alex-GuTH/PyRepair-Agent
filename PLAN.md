@@ -943,7 +943,8 @@ Update `PLAN.md` Task 11 status and `AGENT_LOG.md` with the commit hash.
 
 ### Task 12: Credential Management
 
-**Status:** Implemented in `80f5363`. TDD red verification failed because
+**Status:** Complete; implementation commit `80f5363`, evidence commit
+`6136891`. TDD red verification failed because
 `pyrepair.credentials` was absent; focused green verification passed `8 passed`.
 `make test` is unavailable in this Windows environment, and the equivalent
 `python -m pytest -q` verification passed `95 passed`.
