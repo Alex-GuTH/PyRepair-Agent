@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +33,18 @@ _SENSITIVE_KEY_MARKERS = (
     "password",
     "credential",
     "private_key",
+)
+_SECRET_VALUE_PATTERNS = (
+    re.compile(r"sk-[A-Za-z0-9._-]+"),
+    re.compile(
+        r"(?i)(OPENAI_API_KEY|API_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|PRIVATE_KEY)\s*=\s*['\"]?[^'\"\s,;]+"
+    ),
+    re.compile(
+        r"(?i)([\"']?(?:api_key|apikey|token|secret|password|credential|private_key)[\"']?\s*:\s*[\"'])[^\"']+([\"'])"
+    ),
+    re.compile(
+        r"(?i)((?:api_key|apikey|token|secret|password|credential|private_key)\s*:\s*)[^,\s;]+"
+    ),
 )
 
 
@@ -100,8 +113,10 @@ def _redact_sensitive(value: object, sensitive_context: bool = False) -> object:
         }
     if isinstance(value, list):
         return [_redact_sensitive(item, sensitive_context) for item in value]
-    if sensitive_context or (isinstance(value, str) and _contains_sensitive_reference(value)):
-        return _REDACTED
+    if isinstance(value, str):
+        if sensitive_context:
+            return _REDACTED
+        return _redact_text(value)
     return value
 
 
@@ -113,6 +128,21 @@ def _is_sensitive_key(key: str) -> bool:
 def _contains_sensitive_reference(value: str) -> bool:
     normalized = value.casefold()
     return "openai_api_key" in normalized or "api_key=" in normalized
+
+
+def _redact_text(value: str) -> str:
+    redacted = _REDACTED if _contains_sensitive_reference(value) else value
+    for pattern in _SECRET_VALUE_PATTERNS:
+        redacted = pattern.sub(_pattern_replacement, redacted)
+    return redacted
+
+
+def _pattern_replacement(match: re.Match[str]) -> str:
+    if match.lastindex == 2:
+        return f"{match.group(1)}{_REDACTED}{match.group(2)}"
+    if match.lastindex == 1:
+        return f"{match.group(1)}={_REDACTED}"
+    return _REDACTED
 
 
 def _run_record_from_dict(data: dict[str, Any]) -> RunRecord:

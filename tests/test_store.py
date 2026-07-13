@@ -9,9 +9,11 @@ from pyrepair.models import (
     ActionType,
     FailureCategory,
     FailureSummary,
+    PatchRecord,
     RunRecord,
     RunStatus,
     RunStep,
+    TestResult,
     TestStatus,
     ToolResult,
 )
@@ -106,3 +108,34 @@ def test_store_redacts_sensitive_nested_values_before_writing(tmp_path: Path) ->
     assert payload["api_key_ref"] == "[REDACTED]"
     assert payload["OPENAI_API_KEY"] == "[REDACTED]"
     assert payload["nested"]["token"] == "[REDACTED]"
+
+
+def test_store_redacts_secrets_in_unstructured_text_fields(tmp_path: Path) -> None:
+    store = JsonlRunStore(tmp_path)
+    secret = "sk-unstructured-secret-123"
+    run = RunRecord(id="run-004", project_root="C:/projects/secret")
+    step = RunStep(
+        run_id=run.id,
+        round_index=1,
+        context_summary=f"Use OPENAI_API_KEY = {secret}",
+        action=Action(
+            type=ActionType.APPLY_PATCH,
+            raw_model_output=f'{{"api_key": "{secret}"}}',
+        ),
+        tool_result=ToolResult(
+            tool_name="pytest",
+            stdout_summary=f"stdout leaked {secret}",
+            stderr_summary=f"stderr has OPENAI_API_KEY={secret}",
+            test_result=TestResult(stdout=f"raw stdout {secret}", stderr=f"raw stderr {secret}"),
+            patch_record=PatchRecord(diff=f"+API_KEY = '{secret}'\n"),
+        ),
+        feedback=FailureSummary(message=f"secret token: {secret}"),
+    )
+
+    store.create_run(run)
+    store.append_step(run.id, step)
+
+    stored_text = (tmp_path / "run-004.jsonl").read_text(encoding="utf-8")
+
+    assert secret not in stored_text
+    assert "[REDACTED]" in stored_text
