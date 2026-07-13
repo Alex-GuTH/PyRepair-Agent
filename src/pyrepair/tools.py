@@ -115,6 +115,7 @@ class PatchApplier:
             index += 1
             self._resolve_diff_path(project_root, old_path)
             target_path = self._resolve_diff_path(project_root, new_path)
+            self._validate_source_write(project_root, target_path)
 
             hunks: list[list[str]] = []
             while index < len(lines) and not lines[index].startswith("--- "):
@@ -138,6 +139,17 @@ class PatchApplier:
         return patches
 
     @staticmethod
+    def _validate_source_write(project_root: Path, path: Path) -> None:
+        relative_parts = path.relative_to(project_root).parts
+        if (
+            path.suffix != ".py"
+            or "tests" in relative_parts
+            or path.name.startswith("test_")
+            or path.name.endswith("_test.py")
+        ):
+            raise ValueError("patch target must be an ordinary Python source file")
+
+    @staticmethod
     def _header_path(header: str) -> str:
         path = header.rstrip("\r\n").split("\t", 1)[0]
         if path == "/dev/null":
@@ -156,7 +168,8 @@ class PatchApplier:
             match = re.match(r"@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@", hunk[0])
             if match is None:
                 raise ValueError("invalid unified diff hunk header")
-            start = int(match.group(1)) - 1 + offset
+            old_start = int(match.group(1))
+            start = (0 if old_start == 0 else old_start - 1) + offset
             expected: list[str] = []
             replacement: list[str] = []
             for line in hunk[1:]:

@@ -89,3 +89,38 @@ def test_patch_applier_applies_source_diff_and_rejects_path_escape(tmp_path: Pat
             "-VALUE = 2\n"
             "+VALUE = 3\n",
         )
+
+
+def test_patch_applier_rejects_non_source_targets(tmp_path: Path) -> None:
+    test_file = tmp_path / "tests" / "test_app.py"
+    test_file.parent.mkdir()
+    test_file.write_text("def test_value():\n    assert 1 == 1\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="ordinary Python source"):
+        PatchApplier().apply_unified_diff(
+            tmp_path,
+            "--- a/tests/test_app.py\n"
+            "+++ b/tests/test_app.py\n"
+            "@@ -1,2 +1,2 @@\n"
+            " def test_value():\n"
+            "-    assert 1 == 1\n"
+            "+    assert 2 == 2\n",
+        )
+
+    assert test_file.read_text(encoding="utf-8") == "def test_value():\n    assert 1 == 1\n"
+
+
+def test_patch_applier_handles_zero_start_insertion_at_file_top(tmp_path: Path) -> None:
+    source_file = tmp_path / "src" / "app.py"
+    source_file.parent.mkdir()
+    source_file.write_text("SECOND = 2\nTHIRD = 3\n", encoding="utf-8")
+
+    PatchApplier().apply_unified_diff(
+        tmp_path,
+        "--- a/src/app.py\n"
+        "+++ b/src/app.py\n"
+        "@@ -0,0 +1 @@\n"
+        "+FIRST = 1\n",
+    )
+
+    assert source_file.read_text(encoding="utf-8") == "FIRST = 1\nSECOND = 2\nTHIRD = 3\n"
