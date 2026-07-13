@@ -68,11 +68,11 @@ class OpenAICompatibleLLMClient:
                 self._timeout_seconds,
             )
         except (TimeoutError, socket.timeout) as error:
-            raise LLMTimeoutError("LLM request timed out") from error
+            raise LLMTimeoutError("LLM request timed out") from None
         except URLError as error:
             if isinstance(error.reason, (TimeoutError, socket.timeout)):
-                raise LLMTimeoutError("LLM request timed out") from error
-            raise RuntimeError("LLM request failed") from error
+                raise LLMTimeoutError("LLM request timed out") from None
+            raise RuntimeError("LLM request failed") from None
 
         return _extract_content(response_bytes)
 

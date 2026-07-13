@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import traceback
 
 import pytest
 
@@ -86,6 +87,34 @@ def test_openai_compatible_client_wraps_transport_timeouts_without_key() -> None
         client.generate([])
 
     assert api_key not in str(error.value)
+
+
+def test_openai_compatible_client_hides_key_from_transport_failure_traceback() -> None:
+    api_key = "test-api-key"
+
+    def timeout_transport(
+        url: str,
+        body: bytes,
+        headers: dict[str, str],
+        timeout_seconds: float,
+    ) -> bytes:
+        raise TimeoutError(f"Authorization: Bearer {api_key}")
+
+    client = OpenAICompatibleLLMClient(
+        base_url="https://llm.example",
+        model="repair-model",
+        api_key=api_key,
+        transport=timeout_transport,
+    )
+
+    with pytest.raises(LLMTimeoutError) as error:
+        client.generate([])
+
+    formatted_traceback = "".join(
+        traceback.format_exception(error.type, error.value, error.tb)
+    )
+
+    assert api_key not in formatted_traceback
 
 
 def test_openai_compatible_client_rejects_invalid_response_shape_without_key() -> None:
