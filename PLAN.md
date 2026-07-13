@@ -864,7 +864,7 @@ passed `4 passed`. `make test` is unavailable in this Windows environment, and
 the equivalent `python -m pytest -q` verification passed `91 passed`.
 Review fix: unconfigured `OPENAI_COMPATIBLE` runs now fail explicitly instead
 of silently using mock; focused review verification passed `5 passed`, and full
-verification passed `92 passed`.
+verification passed `92 passed`. Review-fix commit `435494a`.
 
 **Files:**
 - Create: `src/pyrepair/config.py`
