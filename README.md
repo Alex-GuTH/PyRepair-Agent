@@ -181,5 +181,11 @@ command below and record that `make test` was unavailable:
 python -m pytest -q
 ```
 
-This repository does not claim a remote CI result until the selected platform
-has executed the workflow.
+Remote CI evidence recorded on 2026-07-14:
+
+- GitHub Actions `Unit tests` run `29324360040` completed successfully for PR #1
+  after commit `7b5087c`; the paired push run `29324358508` also completed
+  successfully for `docs: record public registry evidence`.
+- GitLab pipeline `#311726` passed on branch `feature/scaffold-and-process` for
+  commit `7b5087ce`; job `unit-test` ran in Docker image `python:3.11`,
+  executed `make test`, and reported `112 passed in 4.92s`.

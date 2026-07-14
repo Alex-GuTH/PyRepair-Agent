@@ -30,9 +30,11 @@ Related plan coverage:
   `python -m pytest -q` passed `112 passed, 1 warning`; public WebUI
   `npm.cmd test` passed `2 passed`; `git diff --check` passed with Windows
   line-ending warnings only.
-- Latest GitHub Actions after the compliance patch: run `29322010796`, job
-  `unit-test`, success for commit `feb1c42`; the workflow includes a Docker
-  image build step.
+- Latest GitHub Actions after registry evidence: PR run `29324360040` and push
+  run `29324358508` completed successfully for commit `7b5087c`.
+- GitLab pipeline `#311726` passed on branch `feature/scaffold-and-process` for
+  commit `7b5087ce`; job `unit-test` ran `make test` and reported
+  `112 passed in 4.92s`.
 
 ## Safety and Distribution Notes
 
@@ -40,8 +42,8 @@ Related plan coverage:
   scans reported expected fixture matches only.
 - Public WebUI URL is mock/demo-only:
   https://pyrepair-agent-demo.glossy-otter-9952.chatgpt.site
-- GitLab CI configuration exists with a `unit-test` job, but this repository
-  currently has no GitLab remote or GitLab-hosted pipeline evidence.
+- GitLab CI configuration exists with a `unit-test` job, and the platform run
+  evidence is recorded in `README.md` and `AGENT_LOG.md`.
 - Public container registry image:
   `ghcr.io/alex-guth/pyrepair-agent:0.1.0`. It is public on GHCR, and the
   recorded digest is
@@ -52,9 +54,7 @@ Related plan coverage:
 
 ## Remaining Externally Controlled Evidence
 
-- GitLab-hosted pass evidence requires creating/importing the repo on GitLab or
-  configuring a GitLab remote and running its pipeline.
-- PR description still needs to be pasted into the GitHub PR manually if the
-  repository owner wants the PR page itself to contain this summary, because
+- No remaining externally controlled distribution or CI evidence is known.
+- The GitHub PR description was manually updated by the repository owner because
   connector-based PR body/comment updates returned `Resource not accessible by
   integration`.
