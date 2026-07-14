@@ -1189,8 +1189,8 @@ Update `PLAN.md` Task 14 status and `AGENT_LOG.md` with the commit hash.
 - [x] Ensure `.gitlab-ci.yml` has a `unit-test` job and collect final pass evidence on the required platform if available.
 - [x] Build Docker image and run mock demo inside it.
 - [x] Deploy mock/demo-only WebUI and record the public URL.
-- [ ] Complete `REFLECTION.md` manually as the student owner.
-- [ ] Run final secret scan over source, docs, logs, and history before submission.
+- [x] Complete `REFLECTION.md` manually as the student owner.
+- [x] Run final secret scan over source, docs, logs, and history before submission.
 
 ## Plan Self-Review Checklist
 
