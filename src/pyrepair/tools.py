@@ -89,6 +89,7 @@ class PatchApplier:
 
         for path, content in updated_files:
             path.write_text(content, encoding="utf-8")
+            self._remove_bytecode_cache(path)
 
         return PatchRecord(
             files_changed=[path.relative_to(root).as_posix() for path, _ in updated_files],
@@ -150,6 +151,14 @@ class PatchApplier:
             or name.endswith("_test.py")
         ):
             raise ValueError("patch target must be an ordinary Python source file")
+
+    @staticmethod
+    def _remove_bytecode_cache(path: Path) -> None:
+        pycache_dir = path.parent / "__pycache__"
+        if not pycache_dir.is_dir():
+            return
+        for pyc_path in pycache_dir.glob(f"{path.stem}.*.pyc"):
+            pyc_path.unlink()
 
     @staticmethod
     def _header_path(header: str) -> str:

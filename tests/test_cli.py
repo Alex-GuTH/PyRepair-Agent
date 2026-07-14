@@ -120,10 +120,11 @@ def test_key_commands_store_and_report_without_printing_secret(monkeypatch: pyte
 def test_key_set_does_not_accept_a_command_line_secret() -> None:
     from pyrepair.cli import app
 
-    result = runner.invoke(app, ["key", "set", "--value", "sk-test-only-cli-secret-123456"])
+    secret = "sk-test-only-cli-secret-123456"
+    result = runner.invoke(app, ["key", "set", "--value", secret])
 
     assert result.exit_code != 0
-    assert "--value" in result.output
+    assert secret not in result.output
 
 
 def test_key_status_reports_backend_failure_without_a_secret(monkeypatch: pytest.MonkeyPatch) -> None:

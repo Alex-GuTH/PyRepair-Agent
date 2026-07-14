@@ -91,6 +91,27 @@ def test_patch_applier_applies_source_diff_and_rejects_path_escape(tmp_path: Pat
         )
 
 
+def test_patch_applier_removes_stale_bytecode_cache(tmp_path: Path) -> None:
+    source_file = tmp_path / "src" / "app.py"
+    pycache_file = tmp_path / "src" / "__pycache__" / "app.cpython-311.pyc"
+    source_file.parent.mkdir()
+    pycache_file.parent.mkdir()
+    source_file.write_text("VALUE = 1\n", encoding="utf-8")
+    pycache_file.write_bytes(b"stale-bytecode")
+
+    PatchApplier().apply_unified_diff(
+        tmp_path,
+        "--- a/src/app.py\n"
+        "+++ b/src/app.py\n"
+        "@@ -1 +1 @@\n"
+        "-VALUE = 1\n"
+        "+VALUE = 2\n",
+    )
+
+    assert source_file.read_text(encoding="utf-8") == "VALUE = 2\n"
+    assert not pycache_file.exists()
+
+
 def test_patch_applier_rejects_non_source_targets(tmp_path: Path) -> None:
     test_file = tmp_path / "tests" / "test_app.py"
     test_file.parent.mkdir()
