@@ -1,4 +1,5 @@
 from pathlib import Path
+import tomllib
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,13 @@ def test_dockerfile_keeps_source_tree_available_for_mock_demos() -> None:
 
     assert "pip install --no-cache-dir -e ." in dockerfile
     assert 'CMD ["pyrepair", "demo", "full"]' in dockerfile
+
+
+def test_dev_dependencies_include_fastapi_test_client_runtime() -> None:
+    pyproject = tomllib.loads((PROJECT_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    dev_dependencies = pyproject["project"]["optional-dependencies"]["dev"]
+
+    assert "httpx2>=0.28" in dev_dependencies
 
 
 def test_readme_has_required_course_headings() -> None:
