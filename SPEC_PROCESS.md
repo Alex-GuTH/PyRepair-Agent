@@ -141,6 +141,9 @@ Status: completed once; SPEC and PLAN revised.
 Validation setup:
 
 - A separate worker agent was spawned without conversation context.
+- Different agent type evidence: the cold-start worker was run as a fresh
+  subagent-style worker with no inherited conversation memory, not as the
+  original brainstorming/controller context.
 - It was instructed to read only `SPEC.md` and `PLAN.md`.
 - It was asked to attempt PLAN Task 3 or report ambiguities.
 
@@ -162,6 +165,11 @@ Required SPEC/PLAN revisions:
 - `PLAN.md` Task 3 was revised to include the exact model contract and stronger
   tests for enum values, defaults, nested `TestResult.failure_summary`, and
   serialization.
+- Revision diff summary: before the cold-start feedback, the model contract
+  named concepts but left enum values, field defaults, and nested relationships
+  implicit; after the revision, `SPEC.md` section 8 lists concrete enum values,
+  dataclass fields, defaults, and serialization rules, and `PLAN.md` Task 3
+  mirrors those concrete checks as test-first acceptance criteria.
 
 ## 6. Notes for Final Reflection
 
@@ -172,3 +180,45 @@ Required SPEC/PLAN revisions:
   cannot be collected naturally.
 - The project intentionally separates local repair mode from public demo mode to
   reduce remote code execution risk.
+
+## 7. Task 1 Implementation Evidence
+
+- The package import contract was written and run before the package existed;
+  the expected `ModuleNotFoundError` confirmed the red phase.
+- The minimal `src/pyrepair` package, project metadata, and canonical `make test`
+  target were then added without introducing runtime dependencies.
+- Green verification is recorded in `.superpowers/sdd/task-1-report.md`.
+- Task 1 scaffold commit: `1a33db8`.
+- Local `make test` could not run because Make is unavailable on this Windows
+  environment; the underlying `python -m pytest -q` command passed and CI must
+  validate `make test`.
+
+## 8. Task 14 Delivery Evidence
+
+- Task 14 began with a repository-level contract test for the two CI files, the
+  Dockerfile, and required README headings. The initial RED run failed because
+  the workflow and README did not exist.
+- The delivery configuration keeps the same offline entry point across GitHub
+  Actions and GitLab CI: install the project with development dependencies, then
+  run `make test`.
+- The Docker image uses an editable install so the source-tree demo fixtures
+  remain available to the default deterministic mock demonstration. The WebUI
+  remains explicitly demo-only when started locally.
+- README guidance documents installation, commands, distribution, credential
+  handling, plaintext `.env` risk, guardrails, limits, and the difference
+  between local evidence and unverified remote CI.
+- `REFLECTION.md` is a neutral student-completion template rather than a record
+  of fabricated outcomes. Exact Task 14 RED/GREEN and final verification output
+  is recorded in `.superpowers/sdd/task-14-report.md`.
+- Focused GREEN verification passed `3 passed`; the full offline pytest suite
+  passed `105 passed` with one third-party deprecation warning. `git diff --check`
+  completed without whitespace errors. Local `make test` could not run because
+  Make is not installed on this Windows host, so no remote CI pass is implied.
+- Task 14 delivery commit: `013f89c`.
+- The Task 14 worker was blocked only at its own normal staging attempt by the
+  worktree `index.lock` permission error. The controller then verified the
+  changes and created `013f89c` through the approved elevated Git path. The
+  original blocked wording in `.superpowers/sdd/task-14-report.md` was a
+  time-specific worker record, not the only exact source of final Task 14
+  history; the report now records this later controller action as well.
+- Task 14 review-fix commit: `f8a63e7`.
