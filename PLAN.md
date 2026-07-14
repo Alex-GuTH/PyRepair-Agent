@@ -1184,7 +1184,7 @@ Update `PLAN.md` Task 14 status and `AGENT_LOG.md` with the commit hash.
 - [x] Run `pyrepair demo feedback-loop` and record output in `AGENT_LOG.md`.
 - [x] Run `pyrepair demo guardrail` and record output in `AGENT_LOG.md`.
 - [x] Run the real API smoke test only if the human owner has configured an API key and explicitly approves the call.
-- [ ] Push feature branches and collect PR/MR links.
+- [x] Push feature branches and collect PR/MR links.
 - [ ] Ensure GitHub Actions has a passing run.
 - [ ] Ensure `.gitlab-ci.yml` has a `unit-test` job and collect final pass evidence on the required platform if available.
 - [ ] Build Docker image and run mock demo inside it.
