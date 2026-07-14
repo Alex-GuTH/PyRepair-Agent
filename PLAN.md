@@ -1180,7 +1180,7 @@ Update `PLAN.md` Task 14 status and `AGENT_LOG.md` with the commit hash.
 
 ## Post-Implementation Review Gates
 
-- [ ] Run `make test` and record output in `AGENT_LOG.md`.
+- [x] Run `make test` and record output in `AGENT_LOG.md`.
 - [ ] Run `pyrepair demo feedback-loop` and record output in `AGENT_LOG.md`.
 - [ ] Run `pyrepair demo guardrail` and record output in `AGENT_LOG.md`.
 - [ ] Run the real API smoke test only if the human owner has configured an API key and explicitly approves the call.
