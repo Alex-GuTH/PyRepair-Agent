@@ -28,67 +28,67 @@
 
 ## Implementation Preconditions
 
-- [ ] Move `SPEC.md` and this `PLAN.md` into the final course repository, or initialize the current directory as the final repository after human confirmation.
-- [ ] Stop before implementation if `git status --short` fails with "not a git repository".
-- [ ] Create the main branch and remote before feature work, so worktree, branch, PR/MR, commit, and CI evidence are collected from the start.
-- [ ] Create `SPEC_PROCESS.md` before implementation and record this brainstorming session summary, at least three key iterations, and accepted/rejected design decisions.
-- [ ] Run cold-start validation with a different agent after `SPEC.md` and `PLAN.md` are approved. Give that agent only `SPEC.md` and `PLAN.md`, ask it to attempt one or two early tasks, and record gaps in `SPEC_PROCESS.md`.
+- [x] Move `SPEC.md` and this `PLAN.md` into the final course repository, or initialize the current directory as the final repository after human confirmation.
+- [x] Stop before implementation if `git status --short` fails with "not a git repository".
+- [x] Create the main branch and remote before feature work, so worktree, branch, PR/MR, commit, and CI evidence are collected from the start.
+- [x] Create `SPEC_PROCESS.md` before implementation and record this brainstorming session summary, at least three key iterations, and accepted/rejected design decisions.
+- [x] Run cold-start validation with a different agent after `SPEC.md` and `PLAN.md` are approved. Give that agent only `SPEC.md` and `PLAN.md`, ask it to attempt one or two early tasks, and record gaps in `SPEC_PROCESS.md`.
 
 ## File Structure
 
 ```text
 .
-├── SPEC.md
-├── PLAN.md
-├── SPEC_PROCESS.md
-├── AGENT_LOG.md
-├── REFLECTION.md
-├── README.md
-├── Makefile
-├── Dockerfile
-├── pyproject.toml
-├── .gitignore
-├── .gitlab-ci.yml
-├── .github/
-│   └── workflows/
-│       └── unit-test.yml
-├── src/
-│   └── pyrepair/
-│       ├── __init__.py
-│       ├── actions.py
-│       ├── cli.py
-│       ├── config.py
-│       ├── core.py
-│       ├── credentials.py
-│       ├── feedback.py
-│       ├── guardrails.py
-│       ├── llm.py
-│       ├── models.py
-│       ├── run_controller.py
-│       ├── store.py
-│       ├── tools.py
-│       └── web/
-│           ├── __init__.py
-│           ├── app.py
-│           └── static/
-│               ├── app.js
-│               └── styles.css
-├── tests/
-│   ├── test_actions.py
-│   ├── test_cli.py
-│   ├── test_core_loop.py
-│   ├── test_credentials.py
-│   ├── test_feedback.py
-│   ├── test_guardrails.py
-│   ├── test_store.py
-│   ├── test_tools.py
-│   └── test_web.py
-└── examples/
-    └── buggy_calculator/
-        ├── src/
-        │   └── calculator.py
-        └── tests/
-            └── test_calculator.py
+鈹溾攢鈹€ SPEC.md
+鈹溾攢鈹€ PLAN.md
+鈹溾攢鈹€ SPEC_PROCESS.md
+鈹溾攢鈹€ AGENT_LOG.md
+鈹溾攢鈹€ REFLECTION.md
+鈹溾攢鈹€ README.md
+鈹溾攢鈹€ Makefile
+鈹溾攢鈹€ Dockerfile
+鈹溾攢鈹€ pyproject.toml
+鈹溾攢鈹€ .gitignore
+鈹溾攢鈹€ .gitlab-ci.yml
+鈹溾攢鈹€ .github/
+鈹?  鈹斺攢鈹€ workflows/
+鈹?      鈹斺攢鈹€ unit-test.yml
+鈹溾攢鈹€ src/
+鈹?  鈹斺攢鈹€ pyrepair/
+鈹?      鈹溾攢鈹€ __init__.py
+鈹?      鈹溾攢鈹€ actions.py
+鈹?      鈹溾攢鈹€ cli.py
+鈹?      鈹溾攢鈹€ config.py
+鈹?      鈹溾攢鈹€ core.py
+鈹?      鈹溾攢鈹€ credentials.py
+鈹?      鈹溾攢鈹€ feedback.py
+鈹?      鈹溾攢鈹€ guardrails.py
+鈹?      鈹溾攢鈹€ llm.py
+鈹?      鈹溾攢鈹€ models.py
+鈹?      鈹溾攢鈹€ run_controller.py
+鈹?      鈹溾攢鈹€ store.py
+鈹?      鈹溾攢鈹€ tools.py
+鈹?      鈹斺攢鈹€ web/
+鈹?          鈹溾攢鈹€ __init__.py
+鈹?          鈹溾攢鈹€ app.py
+鈹?          鈹斺攢鈹€ static/
+鈹?              鈹溾攢鈹€ app.js
+鈹?              鈹斺攢鈹€ styles.css
+鈹溾攢鈹€ tests/
+鈹?  鈹溾攢鈹€ test_actions.py
+鈹?  鈹溾攢鈹€ test_cli.py
+鈹?  鈹溾攢鈹€ test_core_loop.py
+鈹?  鈹溾攢鈹€ test_credentials.py
+鈹?  鈹溾攢鈹€ test_feedback.py
+鈹?  鈹溾攢鈹€ test_guardrails.py
+鈹?  鈹溾攢鈹€ test_store.py
+鈹?  鈹溾攢鈹€ test_tools.py
+鈹?  鈹斺攢鈹€ test_web.py
+鈹斺攢鈹€ examples/
+    鈹斺攢鈹€ buggy_calculator/
+        鈹溾攢鈹€ src/
+        鈹?  鈹斺攢鈹€ calculator.py
+        鈹斺攢鈹€ tests/
+            鈹斺攢鈹€ test_calculator.py
 ```
 
 ## Branch and PR Plan
@@ -292,7 +292,7 @@ a follow-up docs commit to avoid self-referential amend loops.
 - Produces helper functions `to_jsonable(value: object) -> object` and `dataclass_to_dict(value: object) -> dict[str, object]` that serialize enums as strings and nested dataclasses recursively.
 - Later tasks import these models directly from `pyrepair.models`.
 
-- [ ] **Step 1: Write failing model tests**
+- [x] **Step 1: Write failing model tests**
 
 Create `tests/test_models.py` with tests that construct:
 
@@ -344,23 +344,23 @@ def test_model_serialization_uses_enum_values():
     assert data["parse_status"] == "PARSED"
 ```
 
-- [ ] **Step 2: Run red verification**
+- [x] **Step 2: Run red verification**
 
 Run: `python -m pytest tests/test_models.py -q`
 
 Expected: FAIL because `pyrepair.models` does not exist.
 
-- [ ] **Step 3: Implement minimal models**
+- [x] **Step 3: Implement minimal models**
 
 Create enums, dataclasses, and serialization helpers named in the Interfaces block. Use `dataclasses.field(default_factory=list)` for every list field. Use `from __future__ import annotations` so union types can reference later dataclasses safely.
 
-- [ ] **Step 4: Run green verification**
+- [x] **Step 4: Run green verification**
 
 Run: `python -m pytest tests/test_models.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit and record evidence**
+- [x] **Step 5: Commit and record evidence**
 
 Run:
 
@@ -476,7 +476,7 @@ Seventh review-fix evidence commit: `56e1fc3`.
 - Produces `GuardrailPolicy` dataclass.
 - Produces `evaluate_action(action: Action, project_root: Path, policy: GuardrailPolicy) -> GuardrailDecision`.
 
-- [ ] **Step 1: Write failing path and sensitive-file tests**
+- [x] **Step 1: Write failing path and sensitive-file tests**
 
 Test cases:
 
@@ -502,17 +502,17 @@ def test_rejects_env_file_read(tmp_path):
     assert decision.policy_code == "sensitive_file"
 ```
 
-- [ ] **Step 2: Write failing write-policy tests**
+- [x] **Step 2: Write failing write-policy tests**
 
 Test automatic source write, approval for tests, and rejection for delete actions.
 
-- [ ] **Step 3: Run red verification**
+- [x] **Step 3: Run red verification**
 
 Run: `python -m pytest tests/test_guardrails.py -q`
 
 Expected: FAIL because `pyrepair.guardrails` does not exist.
 
-- [ ] **Step 4: Implement guardrail policy**
+- [x] **Step 4: Implement guardrail policy**
 
 Implement:
 
@@ -523,13 +523,13 @@ Implement:
 - reject for file deletion and writes outside project;
 - allow only configured pytest command for `RUN_TESTS`.
 
-- [ ] **Step 5: Run green verification**
+- [x] **Step 5: Run green verification**
 
 Run: `python -m pytest tests/test_guardrails.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit and record evidence**
+- [x] **Step 6: Commit and record evidence**
 
 Run:
 

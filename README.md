@@ -88,6 +88,15 @@ bind a deliberate local port:
 docker run --rm -p 8000:8000 pyrepair-agent pyrepair web --host 0.0.0.0 --port 8000
 ```
 
+Public registry status: the repository includes a Dockerfile and CI builds the
+image on GitHub Actions. A public registry image is not pushed automatically
+from this feature branch; publish it only after repository/package permissions
+are reviewed. A suitable target name is:
+
+```text
+ghcr.io/alex-guth/pyrepair-agent:0.1.0
+```
+
 ## Directory Structure
 
 ```text
@@ -100,6 +109,16 @@ Dockerfile          Offline demo image definition
 SPEC.md             Product and mechanism specification
 PLAN.md             Task-by-task implementation plan
 ```
+
+## Third-Party Dependencies and Licenses
+
+This project depends on PyPI packages declared in `pyproject.toml`, including
+Typer, FastAPI, Uvicorn, pytest, and httpx2. The public WebUI under
+`deploy/public-webui` depends on npm packages declared in its `package.json`,
+including React, React DOM, Vinext, Vite, and TypeScript tooling. Before any
+external publication, review the resolved dependency licenses from the package
+metadata and keep them compatible with the course submission and hosting
+environment.
 
 ## Secure Key Configuration
 

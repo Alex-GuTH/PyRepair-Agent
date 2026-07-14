@@ -141,6 +141,9 @@ Status: completed once; SPEC and PLAN revised.
 Validation setup:
 
 - A separate worker agent was spawned without conversation context.
+- Different agent type evidence: the cold-start worker was run as a fresh
+  subagent-style worker with no inherited conversation memory, not as the
+  original brainstorming/controller context.
 - It was instructed to read only `SPEC.md` and `PLAN.md`.
 - It was asked to attempt PLAN Task 3 or report ambiguities.
 
@@ -162,6 +165,11 @@ Required SPEC/PLAN revisions:
 - `PLAN.md` Task 3 was revised to include the exact model contract and stronger
   tests for enum values, defaults, nested `TestResult.failure_summary`, and
   serialization.
+- Revision diff summary: before the cold-start feedback, the model contract
+  named concepts but left enum values, field defaults, and nested relationships
+  implicit; after the revision, `SPEC.md` section 8 lists concrete enum values,
+  dataclass fields, defaults, and serialization rules, and `PLAN.md` Task 3
+  mirrors those concrete checks as test-first acceptance criteria.
 
 ## 6. Notes for Final Reflection
 

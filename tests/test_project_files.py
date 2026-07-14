@@ -35,6 +35,14 @@ def test_ci_configs_run_the_canonical_offline_test_command() -> None:
     ) in gitlab_config
 
 
+def test_github_actions_builds_docker_image_for_container_distribution() -> None:
+    github_workflow = (
+        PROJECT_ROOT / ".github" / "workflows" / "unit-test.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "docker build -t pyrepair-agent" in github_workflow
+
+
 def test_dockerfile_keeps_source_tree_available_for_mock_demos() -> None:
     dockerfile = (PROJECT_ROOT / "Dockerfile").read_text(encoding="utf-8")
 
@@ -63,8 +71,28 @@ def test_readme_has_required_course_headings() -> None:
         "installation",
         "running cli",
         "distribution",
+        "third-party dependencies and licenses",
         "secure key configuration",
         "safety boundaries",
         "known limitations",
     ):
         assert heading in readme
+
+
+def test_plan_has_no_unresolved_task_checkboxes() -> None:
+    plan = (PROJECT_ROOT / "PLAN.md").read_text(encoding="utf-8")
+
+    unresolved = [
+        line
+        for line in plan.splitlines()
+        if line.lstrip().startswith("- [ ]") and "Steps use checkbox" not in line
+    ]
+
+    assert unresolved == []
+
+
+def test_spec_process_records_cold_start_agent_type_and_revision_diff() -> None:
+    process = (PROJECT_ROOT / "SPEC_PROCESS.md").read_text(encoding="utf-8").lower()
+
+    assert "different agent type" in process
+    assert "revision diff" in process
