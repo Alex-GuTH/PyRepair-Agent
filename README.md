@@ -88,14 +88,19 @@ bind a deliberate local port:
 docker run --rm -p 8000:8000 pyrepair-agent pyrepair web --host 0.0.0.0 --port 8000
 ```
 
-Public registry status: the repository includes a Dockerfile and CI builds the
-image on GitHub Actions. A public registry image is not pushed automatically
-from this feature branch; publish it only after repository/package permissions
-are reviewed. A suitable target name is:
+Public registry image:
 
 ```text
 ghcr.io/alex-guth/pyrepair-agent:0.1.0
 ```
+
+Publication evidence recorded on 2026-07-14:
+
+- GHCR package visibility: public.
+- Push digest: `sha256:602c65f84b1cfdaacb4f14fcc64342bdb0e666f334663e973719b3ab7c184568`.
+- `docker pull ghcr.io/alex-guth/pyrepair-agent:0.1.0` reported the image was up to date.
+- `docker run --rm ghcr.io/alex-guth/pyrepair-agent:0.1.0` ran the offline mock demos:
+  feedback-loop final status `PASSED`; guardrail final status `WAITING_APPROVAL`.
 
 ## Directory Structure
 

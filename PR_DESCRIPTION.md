@@ -26,13 +26,13 @@ Related plan coverage:
 ## TDD / Verification Summary
 
 - Mock-LLM feedback-loop and guardrail demos are deterministic and offline.
-- Latest local verification before the compliance patch:
+- Latest local verification after the compliance patch:
   `python -m pytest -q` passed `112 passed, 1 warning`; public WebUI
-  `npm.cmd test` passed `2 passed`; `git diff --check` passed.
-- Latest GitHub Actions before the compliance patch: run `29320131118`, job
-  `unit-test`, success for commit `2690704`.
-- The final compliance patch adds Docker image build to the GitHub Actions
-  workflow, so the next Actions run should provide Docker CI build evidence.
+  `npm.cmd test` passed `2 passed`; `git diff --check` passed with Windows
+  line-ending warnings only.
+- Latest GitHub Actions after the compliance patch: run `29322010796`, job
+  `unit-test`, success for commit `feb1c42`; the workflow includes a Docker
+  image build step.
 
 ## Safety and Distribution Notes
 
@@ -42,14 +42,19 @@ Related plan coverage:
   https://pyrepair-agent-demo.glossy-otter-9952.chatgpt.site
 - GitLab CI configuration exists with a `unit-test` job, but this repository
   currently has no GitLab remote or GitLab-hosted pipeline evidence.
-- Public container registry push is not fabricated here; README documents the
-  intended GHCR target and notes that publishing should happen only after
-  repository/package permissions are reviewed.
+- Public container registry image:
+  `ghcr.io/alex-guth/pyrepair-agent:0.1.0`. It is public on GHCR, and the
+  recorded digest is
+  `sha256:602c65f84b1cfdaacb4f14fcc64342bdb0e666f334663e973719b3ab7c184568`.
+  A user-run pull succeeded, and the default container demo produced
+  feedback-loop final status `PASSED` plus guardrail final status
+  `WAITING_APPROVAL`.
 
 ## Remaining Externally Controlled Evidence
 
 - GitLab-hosted pass evidence requires creating/importing the repo on GitLab or
   configuring a GitLab remote and running its pipeline.
-- Public registry image evidence requires publishing the Docker image to
-  GHCR/Docker Hub and making the package public if the course strictly requires
-  a registry URL.
+- PR description still needs to be pasted into the GitHub PR manually if the
+  repository owner wants the PR page itself to contain this summary, because
+  connector-based PR body/comment updates returned `Resource not accessible by
+  integration`.
