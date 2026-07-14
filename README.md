@@ -38,6 +38,16 @@ Open `http://127.0.0.1:8000` in a browser. This console exposes only bundled
 mock demonstrations; it does not accept arbitrary host paths or provide a
 general shell.
 
+## Public WebUI
+
+The public mock/demo-only WebUI is available at:
+
+https://pyrepair-agent-demo.glossy-otter-9952.chatgpt.site
+
+This deployment is an online demonstration console. It exposes deterministic
+mock run data for the feedback-loop and guardrail mechanisms, and it does not
+connect to local files, shell execution, provider credentials, or a real LLM.
+
 ## Demo Commands
 
 The demos run from temporary copies of the bundled calculator fixture and do
