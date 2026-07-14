@@ -38,8 +38,15 @@ def test_ci_configs_run_the_canonical_offline_test_command() -> None:
 def test_dockerfile_keeps_source_tree_available_for_mock_demos() -> None:
     dockerfile = (PROJECT_ROOT / "Dockerfile").read_text(encoding="utf-8")
 
-    assert "pip install --no-cache-dir -e ." in dockerfile
+    assert 'pip install --no-cache-dir -e ".[dev]"' in dockerfile
     assert 'CMD ["pyrepair", "demo", "full"]' in dockerfile
+
+
+def test_dockerignore_excludes_local_cache_and_process_artifacts() -> None:
+    dockerignore = (PROJECT_ROOT / ".dockerignore").read_text(encoding="utf-8")
+
+    for ignored_path in (".git", ".pytest_cache", "__pycache__", ".superpowers"):
+        assert ignored_path in dockerignore
 
 
 def test_dev_dependencies_include_fastapi_test_client_runtime() -> None:

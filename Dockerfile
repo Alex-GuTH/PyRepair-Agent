@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . /app
 
-RUN python -m pip install --no-cache-dir -e .
+RUN python -m pip install --no-cache-dir -e ".[dev]"
 
 CMD ["pyrepair", "demo", "full"]
